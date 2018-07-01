@@ -2,7 +2,7 @@
     <string name="app_name">Popular Movies</string>
 
     <string name="base_url">https://api.themoviedb.org</string>
-    <string name="api_key">Add you API key here</string>
+    <string name="api_key">fdde22f0d62c95d575ee71100a498507</string>
     <string name="language">en-US</string>
     <string name="page">1</string>
     <string name="spinner">Spinner</string>
