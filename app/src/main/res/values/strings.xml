@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="base_url">https://api.themoviedb.org</string>
+    <string name="api_key">Add you API key here</string>
+    <string name="language">en-US</string>
+    <string name="page">1</string>
+    <string name="spinner">Spinner</string>
+    
+    <string name="spinner_top_rated_value">top_rated</string>
+    <string name="spinner_popular_value">popular</string>
+
+</resources>

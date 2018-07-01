@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+    <ImageView
+        android:id="@+id/backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="205dp"
+        android:layout_weight="50"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"
+        android:background="#212121"
+        android:padding="2dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/detail_poster"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        android:cropToPadding="true"
+        android:background="#212121"
+        android:padding="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/backdrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backdrop"
+        app:layout_constraintVertical_bias="0.264" />
+
+    <TextView
+        android:id="@+id/user_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/release_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toEndOf="@+id/release_date"
+        app:layout_constraintTop_toTopOf="@+id/date_of_release"
+        app:layout_constraintVertical_bias="0.525"
+        tools:text="8.2" />
+
+    <TextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Rating"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/date_of_release"
+        app:layout_constraintEnd_toStartOf="@+id/user_rating"
+        app:layout_constraintHorizontal_bias="0.642"
+        app:layout_constraintStart_toEndOf="@+id/user_rating"
+        app:layout_constraintTop_toBottomOf="@+id/date_of_release"
+        app:layout_constraintVertical_bias="0.538" />
+
+    <TextView
+        android:id="@+id/release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/overview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.655"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backdrop"
+        app:layout_constraintVertical_bias="0.163"
+        tools:text="08-15-1979" />
+
+    <TextView
+        android:id="@+id/date_of_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date of Release"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/overview"
+        app:layout_constraintEnd_toStartOf="@+id/release_date"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toEndOf="@+id/release_date"
+        app:layout_constraintTop_toBottomOf="@+id/release_date"
+        app:layout_constraintVertical_bias="0.044" />
+
+    <TextView
+        android:id="@+id/overview"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_poster"
+        app:layout_constraintVertical_bias="0.14"
+        tools:text="THis is just a placeholder paragraph.
+    Im hoping to see how this works out. Im not sure quite
+    exactly what I'm doing. but I look forward to finishing." />
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>
