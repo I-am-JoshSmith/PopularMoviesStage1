@@ -47,8 +47,13 @@ public class DetailActivity extends AppCompatActivity {
         myBackdrop = getIntent().getExtras().getString("backdrop", "defaultkey");
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
 
-        mVotes.setText(valueOf(myVotes + "/10"));
-        mDate.setText(myDate);
+        //get just the year from the date string 0=year - 1=month - 2=date
+        String input = myDate;
+        String[] out = input.split("-");
+
+
+        mVotes.setText(valueOf(myVotes));
+        mDate.setText(out[0]);
         mOverview.setText(myOverview);
         getSupportActionBar().setTitle(myTitle);
 

@@ -51,23 +51,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.465"
         app:layout_constraintStart_toEndOf="@+id/release_date"
-        app:layout_constraintTop_toTopOf="@+id/date_of_release"
-        app:layout_constraintVertical_bias="0.525"
+        app:layout_constraintTop_toBottomOf="@+id/release_date"
         tools:text="8.2" />
 
     <TextView
         android:id="@+id/rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Rating"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/date_of_release"
-        app:layout_constraintEnd_toStartOf="@+id/user_rating"
-        app:layout_constraintHorizontal_bias="0.642"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:text="/10"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/user_rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/user_rating"
-        app:layout_constraintTop_toBottomOf="@+id/date_of_release"
-        app:layout_constraintVertical_bias="0.538" />
+        app:layout_constraintTop_toBottomOf="@+id/user_rating"
+        app:layout_constraintVertical_bias="0.457" />
 
     <TextView
         android:id="@+id/release_date"
@@ -81,19 +81,6 @@
         app:layout_constraintTop_toBottomOf="@+id/backdrop"
         app:layout_constraintVertical_bias="0.163"
         tools:text="08-15-1979" />
-
-    <TextView
-        android:id="@+id/date_of_release"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date of Release"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/overview"
-        app:layout_constraintEnd_toStartOf="@+id/release_date"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toEndOf="@+id/release_date"
-        app:layout_constraintTop_toBottomOf="@+id/release_date"
-        app:layout_constraintVertical_bias="0.044" />
 
     <TextView
         android:id="@+id/overview"
