@@ -4,6 +4,7 @@ package com.example.android.popmovies_1;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -31,6 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mBackdrop;
     ImageView mPoster;
     FloatingActionButton mFab;
+    boolean flag = true; // true if first icon is visible, false if second one is visible.
 
 
     @Override
@@ -74,12 +76,36 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
 
-        mFab = findViewById(R.id.myFAB);
+       /* mFab = findViewById(R.id.myFAB);
         mFab.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 Toast.makeText(DetailActivity.this, "Movie added to favorites list", Toast.LENGTH_LONG).show();
                 mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+            }
+        }); */
+
+
+
+        mFab = findViewById(R.id.myFAB);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(flag){
+                    // need to figure out how to set the ripple on and off click - future plans for app leaving code here for reference
+                    //mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
+                    mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+                    flag = false;
+
+                }else if(!flag){
+                   // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
+                    mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+                    flag = true;
+
+                }
+
             }
         });
 
