@@ -88,13 +88,13 @@ public class DetailActivity extends AppCompatActivity {
                     //mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                     flag = false;
-                    Toast.makeText(DetailActivity.this, "Movie added to favorites list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
                 }else if(!flag){
                    // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
                     flag = true;
-                    Toast.makeText(DetailActivity.this, "Movie removed from favorites list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
 
                 }
 
