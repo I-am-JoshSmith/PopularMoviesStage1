@@ -76,17 +76,7 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
 
-       /* mFab = findViewById(R.id.myFAB);
-        mFab.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                Toast.makeText(DetailActivity.this, "Movie added to favorites list", Toast.LENGTH_LONG).show();
-                mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-            }
-        }); */
-
-
-
+        // Floating Action Button
         mFab = findViewById(R.id.myFAB);
 
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -98,11 +88,13 @@ public class DetailActivity extends AppCompatActivity {
                     //mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                     flag = false;
+                    Toast.makeText(DetailActivity.this, "Movie added to favorites list", Toast.LENGTH_LONG).show();
 
                 }else if(!flag){
                    // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
                     flag = true;
+                    Toast.makeText(DetailActivity.this, "Movie removed from favorites list", Toast.LENGTH_LONG).show();
 
                 }
 
