@@ -105,7 +105,7 @@
         app:layout_constraintStart_toEndOf="@+id/detail_poster"
         app:layout_constraintTop_toBottomOf="@+id/release_date"
         app:layout_constraintVertical_bias="0.831"
-        app:rippleColor="@color/colorPrimaryDark" />
+        app:rippleColor="@color/floating_action_button_color" />
 
     <TextView
         android:id="@+id/overview"

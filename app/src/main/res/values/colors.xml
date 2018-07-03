@@ -3,5 +3,6 @@
     <color name="colorPrimary">#424242</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#ff8800</color>
+    <color name="floating_action_button_color">#ff8800</color>
 
 </resources>

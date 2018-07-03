@@ -1,11 +1,16 @@
 package com.example.android.popmovies_1;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +30,8 @@ public class DetailActivity extends AppCompatActivity {
     TextView mOverview;
     ImageView mBackdrop;
     ImageView mPoster;
+    FloatingActionButton mFab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,16 @@ public class DetailActivity extends AppCompatActivity {
                 .load("http://image.tmdb.org/t/p/w185/" + myPoster)
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
+
+        mFab = findViewById(R.id.myFAB);
+        mFab.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Toast.makeText(DetailActivity.this, "Movie added to favorites list", Toast.LENGTH_LONG).show();
+                mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+            }
+        });
+
 
     }
 
