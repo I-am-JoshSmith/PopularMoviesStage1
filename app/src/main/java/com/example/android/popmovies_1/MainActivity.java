@@ -132,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.api_key),
                         getString(R.string.language),
                         1);
+
+            // TODO - Need to implement favorites spinner selection and database
+            // case (FAVORITES):
+            //    break;
+
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
                 break;
 

@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * Created by Grimlock on 6/13/18.
+ *  built using Gson Formatter
+ *  from - http://api.themoviedb.org/3/movie/popular?api_key=fdde22f0d62c95d575ee71100a498507
  */
 
 public class MovieResults {

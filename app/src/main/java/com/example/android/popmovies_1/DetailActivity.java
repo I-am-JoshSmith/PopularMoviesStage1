@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import retrofit2.Callback;
+
 import static java.lang.String.valueOf;
 
 
@@ -100,6 +102,7 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         });
+
 
 
     }
