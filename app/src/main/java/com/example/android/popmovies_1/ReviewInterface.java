@@ -9,21 +9,13 @@ import retrofit2.http.Query;
  * Created by Grimlock on 7/3/18.
  */
 
-public interface TrailerInterface {
+public interface ReviewInterface {
 
-         /* asyncronous thread of type MovieResults - method = getMovies
-    Call is built from
-    https://api.themoviedb.org/3/movie/popular?api_key=fdde22f0d62c95d575ee71100a498507&language=en-US&page=1
-    */
-
-    @GET("/3/movie/{id}/videos")
-    Call<TrailerResults> getTrailer(
+    @GET("/3/movie/{id}/reviews")
+    Call<ReviewResults> getReviews (
             @Path("id") String id,
             @Query("api_key") String apiKey,
             @Query("language") String language
 
     );
-
-
 }
-
