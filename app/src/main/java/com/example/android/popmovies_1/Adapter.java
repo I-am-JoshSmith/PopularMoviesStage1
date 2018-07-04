@@ -49,6 +49,7 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
                     intent.putExtra("overview",movie.getOverview());
                     intent.putExtra("backdrop",movie.getBackdrop_path());
                     intent.putExtra("poster",movie.getPoster_path());
+                    intent.putExtra("movieId",movie.getId());
 
                     mContext.startActivity(intent);
 

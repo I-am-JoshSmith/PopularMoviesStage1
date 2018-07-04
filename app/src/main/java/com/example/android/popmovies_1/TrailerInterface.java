@@ -17,7 +17,7 @@ public interface TrailerInterface {
     */
 
     @GET("/3/movie/{id}/videos")
-    Call<TrailerResults> getTrailer(
+    Call<TrailerResults> getTrailers(
             @Path("id") String id,
             @Query("api_key") String apiKey,
             @Query("language") String language
