@@ -76,7 +76,7 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
 
-        // Floating Action Button
+        // Floating Action Button -add/delete from favorites
         mFab = findViewById(R.id.myFAB);
 
         mFab.setOnClickListener(new View.OnClickListener() {
