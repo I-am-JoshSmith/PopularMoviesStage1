@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     FloatingActionButton mFab;
     boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
-    Integer key;
+
 
     private TrailerAdapter tAdapter;
 
@@ -71,7 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         myOverview = getIntent().getExtras().getString("overview", "defaultkey");
         myBackdrop = getIntent().getExtras().getString("backdrop", "defaultkey");
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
-        myTrailer = key;
+        movieId = getIntent().getExtras().getInt("movieId", 0);
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
@@ -88,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
         tRecyclerView.setHasFixedSize(true);
 
 
-        tRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         tAdapter = new TrailerAdapter(this);
         tRecyclerView.setAdapter(tAdapter);
@@ -181,6 +182,7 @@ public class DetailActivity extends AppCompatActivity {
                     if (listOfTrailers != null) {
                         tAdapter.setTrailers(listOfTrailers);
                         tAdapter.notifyDataSetChanged();
+
                     }
 
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+    android:layout_width="266dp"
+    android:layout_height="180dp"
+    android:layout_gravity="center">
 
     <ImageView
         android:id="@+id/iv_Trailer"
@@ -10,5 +12,21 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter" />
+    <ImageView
+        android:id="@+id/iv_play_pause"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:tint="@color/colorAccent"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_play_circle_outline_black_24dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play                  Trailer"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="74dp"
+        android:layout_marginLeft="39dp"/>
 
-</LinearLayout>
+</RelativeLayout>

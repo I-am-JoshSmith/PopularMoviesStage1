@@ -4,6 +4,7 @@ package com.example.android.popmovies_1;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
         public void onBindViewHolder(DetailActivity.TrailerViewHolder holder, int position) {
             final TrailerResults.ResultsBean trailer = tMovieList.get(position);
 
-
             /*
 //on click listener needs to launch youtube video
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +64,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
                     .load("http://img.youtube.com/vi/" + trailer.getKey() + "/0.jpg")
                     .placeholder(R.color.colorPrimaryDark)
                     .into(holder.imageView);
-
+            Log.d("KEY", "KEy-" + trailer.getKey());
         }
 
         @Override
