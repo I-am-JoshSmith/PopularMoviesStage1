@@ -46,8 +46,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
         public void onBindViewHolder(DetailActivity.TrailerViewHolder holder, int position) {
             final TrailerResults.ResultsBean trailer = tMovieList.get(position);
 
-
-//on click listener needs to launch youtube video
             holder.itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -55,6 +53,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("https://www.youtube.com/watch?v="+trailer.getKey()));
                     intent.setPackage("com.google.android.youtube");
+                    intent.putExtra("force_fullscreen",true);
                     tContext.startActivity(intent);
 
                     intent.setComponent(new ComponentName("com.google.android.youtube","com.google.android.youtube.PlayerActivity"));
@@ -66,9 +65,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
                         //No Application can handle your intent
                     }
 
-                    //http://www.youtube.com/watch?v=t7UxjpUaL3Y
-
-                    //CODE HERE TO LAUNCH CORESPONDING YOUTUBE VIDEO IN AP
 
 
 
