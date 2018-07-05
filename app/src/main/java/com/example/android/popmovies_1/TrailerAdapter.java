@@ -58,6 +58,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
 
                     intent.setComponent(new ComponentName("com.google.android.youtube","com.google.android.youtube.PlayerActivity"));
                     PackageManager manager = tContext.getPackageManager();
+
                     List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
                     if (infos.size() > 0) {
                         tContext.startActivity(intent);
