@@ -1,8 +1,12 @@
 package com.example.android.popmovies_1;
 
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,24 +46,35 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
         public void onBindViewHolder(DetailActivity.TrailerViewHolder holder, int position) {
             final TrailerResults.ResultsBean trailer = tMovieList.get(position);
 
-            /*
+
 //on click listener needs to launch youtube video
             holder.itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(tContext, DetailActivity.class);
-                    //pass intent to retrieve youtube trailer launch
-
-                    intent.putExtra("movieId",trailer.getId());
-                    intent.putExtra("key", trailer.getKey());
-
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("https://www.youtube.com/watch?v="+trailer.getKey()));
+                    intent.setPackage("com.google.android.youtube");
                     tContext.startActivity(intent);
+
+                    intent.setComponent(new ComponentName("com.google.android.youtube","com.google.android.youtube.PlayerActivity"));
+                    PackageManager manager = tContext.getPackageManager();
+                    List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
+                    if (infos.size() > 0) {
+                        tContext.startActivity(intent);
+                    }else{
+                        //No Application can handle your intent
+                    }
+
+                    //http://www.youtube.com/watch?v=t7UxjpUaL3Y
+
+                    //CODE HERE TO LAUNCH CORESPONDING YOUTUBE VIDEO IN AP
+
 
 
                 }
             });
-*/
+
             Picasso.get()
                     .load("http://img.youtube.com/vi/" + trailer.getKey() + "/0.jpg")
                     .placeholder(R.color.colorPrimaryDark)
