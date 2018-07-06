@@ -51,7 +51,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<DetailActivity.ReviewVie
 
 
 
-
+/*
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
@@ -79,7 +79,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<DetailActivity.ReviewVie
 
             }
         });
-
+*/
     }
 
 

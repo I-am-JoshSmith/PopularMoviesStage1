@@ -102,7 +102,7 @@ public class DetailActivity extends AppCompatActivity {
         //
         RecyclerView rRecyclerView = findViewById(R.id.rv_Reviews);
         rRecyclerView.setHasFixedSize(true);
-
+        rRecyclerView.setNestedScrollingEnabled(false);
 
         rRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
