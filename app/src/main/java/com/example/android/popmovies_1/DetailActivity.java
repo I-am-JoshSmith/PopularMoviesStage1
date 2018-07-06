@@ -49,7 +49,10 @@ public class DetailActivity extends AppCompatActivity {
     Integer movieId;
 
 
+
+
     private TrailerAdapter tAdapter;
+    private ReviewAdapter rAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +87,8 @@ public class DetailActivity extends AppCompatActivity {
         mOverview.setText(myOverview);
         getSupportActionBar().setTitle(myTitle);
 
-        //RecyclerView - need to adjust code to fit detailView
+        //RecyclerView - Trailers
+        //
         RecyclerView tRecyclerView = findViewById(R.id.rv_Trailers);
         tRecyclerView.setHasFixedSize(true);
 
@@ -94,6 +98,18 @@ public class DetailActivity extends AppCompatActivity {
         tAdapter = new TrailerAdapter(this);
         tRecyclerView.setAdapter(tAdapter);
 
+        //RecyclerView - reviews
+        //
+        RecyclerView rRecyclerView = findViewById(R.id.rv_Reviews);
+        rRecyclerView.setHasFixedSize(true);
+
+
+        rRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        rAdapter = new ReviewAdapter(this);
+        rRecyclerView.setAdapter(rAdapter);
+
+        // Picasso load backdrop and movie poster
         Picasso.get()
                 .load("http://image.tmdb.org/t/p/w300/" + myBackdrop)
                 .placeholder(R.color.colorPrimaryDark)
@@ -132,7 +148,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
         getTrailers();
-
+        getReviews();
 
 
 
@@ -199,6 +215,84 @@ public class DetailActivity extends AppCompatActivity {
         }
 
     }
+
+
+    public static class ReviewViewHolder extends RecyclerView.ViewHolder {
+        TextView mAuthor;
+        TextView mContent;
+        TextView mWebsite;
+        String myAuthor;
+        String myContent;
+        String myWebsite;
+
+        public ReviewViewHolder(View itemView) {
+            super(itemView);
+            mAuthor = itemView.findViewById(R.id.tv_author);
+            mContent = itemView.findViewById(R.id.tv_content);
+            mWebsite = itemView.findViewById(R.id.tv_website);
+
+            mAuthor.setText(myAuthor);
+            mContent.setText(myContent);
+            mWebsite.setText(myWebsite);
+
+
+
+        }
+    }
+
+    private void getReviews() {
+        // retrofit call to load trailers and reviews
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.base_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        //this call creates the retrofit object and passes in the ApiIntrerface into the myInterface object
+        ReviewInterface reviewInterface = retrofit.create(ReviewInterface.class);
+
+
+
+        Call<ReviewResults> call = reviewInterface.getReviews(valueOf(movieId),
+                getString(R.string.api_key),
+                getString(R.string.language));
+
+        if (call != null) {
+            call.enqueue(new Callback<ReviewResults>() {
+                @Override
+                public void onResponse(@NonNull Call<ReviewResults> call, @NonNull Response<ReviewResults> response) {
+
+                    //results is the name of the inner list in the MovieResults json querry
+                    ReviewResults results = response.body();
+
+                    //This gets the list of Movie Results
+                    List<ReviewResults.ResultsBean> listOfReviews = null;
+                    if (results != null) {
+                        listOfReviews = results.getResults();
+                    }
+
+                    if (listOfReviews != null) {
+                        rAdapter.setReviews(listOfReviews);
+                        rAdapter.notifyDataSetChanged();
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ReviewResults> call, Throwable t) {
+                    t.printStackTrace();
+
+                }
+
+
+            });
+        }
+
+    }
+
 }
 
 

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_width="292dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="visible">
 
     <TextView
         android:id="@+id/tv_author"
@@ -19,8 +18,8 @@
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp"
         android:paddingBottom="6dp"
+        android:paddingTop="6dp"
         tools:text="This is where the review will go.
         Yes right here there will be a review.
         Not sure how long the reviews will be but
@@ -31,8 +30,8 @@
         android:id="@+id/tv_website"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp"
         android:paddingBottom="12dp"
+        android:paddingTop="6dp"
         tools:text="www.somewebadress.com/make_the_link_clickable_launch_website" />
 
 </LinearLayout>

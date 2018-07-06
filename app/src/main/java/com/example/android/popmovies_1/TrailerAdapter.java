@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -58,7 +59,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<DetailActivity.TrailerV
 
                     intent.setComponent(new ComponentName("com.google.android.youtube","com.google.android.youtube.PlayerActivity"));
                     PackageManager manager = tContext.getPackageManager();
-
+                    Toast.makeText(tContext, "Press back button when finished", Toast.LENGTH_LONG).show();
                     List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
                     if (infos.size() > 0) {
                         tContext.startActivity(intent);
