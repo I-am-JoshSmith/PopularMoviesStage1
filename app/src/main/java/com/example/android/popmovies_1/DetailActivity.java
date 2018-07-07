@@ -10,6 +10,10 @@ import android.os.Bundle;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -77,6 +81,8 @@ public class DetailActivity extends AppCompatActivity {
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
+
+
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
         String[] out = input.split("-");
@@ -86,6 +92,13 @@ public class DetailActivity extends AppCompatActivity {
         mDate.setText(out[0]);
         mOverview.setText(myOverview);
         getSupportActionBar().setTitle(myTitle);
+
+        final SpannableStringBuilder sb = new SpannableStringBuilder(myOverview);
+        final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+        sb.setSpan(new RelativeSizeSpan(1.3f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        //sb.setSpan(bss, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mOverview.setText(sb);
 
         //RecyclerView - Trailers
         //
@@ -218,23 +231,16 @@ public class DetailActivity extends AppCompatActivity {
 
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
-        TextView mAuthor;
-        TextView mContent;
-        TextView mWebsite;
-        String myAuthor;
-        String myContent;
-        String myWebsite;
+        TextView mAuthorTextView;
+        TextView mContentTextView;
+        TextView mWebsiteTextView;
+
 
         public ReviewViewHolder(View itemView) {
             super(itemView);
-            mAuthor = itemView.findViewById(R.id.tv_author);
-            mContent = itemView.findViewById(R.id.tv_content);
-            mWebsite = itemView.findViewById(R.id.tv_website);
-
-            mAuthor.setText(myAuthor);
-            mContent.setText(myContent);
-            mWebsite.setText(myWebsite);
-
+            mAuthorTextView = itemView.findViewById(R.id.tv_author);
+            mContentTextView = itemView.findViewById(R.id.tv_content);
+            mWebsiteTextView = itemView.findViewById(R.id.tv_website);
 
 
         }

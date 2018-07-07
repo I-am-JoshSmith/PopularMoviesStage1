@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -42,44 +47,30 @@ public class ReviewAdapter extends RecyclerView.Adapter<DetailActivity.ReviewVie
     @Override
     public void onBindViewHolder(DetailActivity.ReviewViewHolder holder, int position) {
         final ReviewResults.ResultsBean review = rMovieList.get(position);
+/*TODO Need to figure out how to implement this to underline the web adress
+        SpannableString content = new SpannableString(holder.mWebsiteTextView.toString());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+       */
 
-        holder.myAuthor = review.getAuthor();
-        holder.myContent = review.getContent();
-        holder.myWebsite = review.getUrl();
+        holder.mAuthorTextView.setText(review.getAuthor());
+        holder.mContentTextView.setText(review.getContent());
+        holder.mWebsiteTextView.setText(review.getUrl());
 
+        holder.mWebsiteTextView.setPaintFlags(holder.mWebsiteTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-
-
-
-/*
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-
+        holder.mWebsiteTextView.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://www.youtube.com/watch?v="));
-                intent.setPackage("com.google.android.youtube");
-                intent.putExtra("force_fullscreen",true);
-                rContext.startActivity(intent);
+            public void onClick(View v) {
+                String url = review.getUrl();
 
-                intent.setComponent(new ComponentName("com.google.android.youtube","com.google.android.youtube.PlayerActivity"));
-                PackageManager manager = rContext.getPackageManager();
-                Toast.makeText(rContext, "Press back button when finished", Toast.LENGTH_LONG).show();
-                List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
-                if (infos.size() > 0) {
-                    rContext.startActivity(intent);
-                }else{
-                    //No Application can handle your intent
-                }
-
-
-
-
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                rContext.startActivity(i);
             }
+
         });
-*/
+
     }
 
 
