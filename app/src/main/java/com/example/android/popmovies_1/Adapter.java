@@ -1,5 +1,5 @@
 package com.example.android.popmovies_1;
-
+// so this is Room
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
