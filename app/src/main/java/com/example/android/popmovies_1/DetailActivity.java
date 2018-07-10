@@ -134,6 +134,8 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mPoster);
 
         // Floating Action Button -add/delete from favorites
+        //TODO - add code to buttons for adding and removing a movie from the favorites list
+
         mFab = findViewById(R.id.myFAB);
 
         mFab.setOnClickListener(new View.OnClickListener() {

@@ -47,10 +47,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<DetailActivity.ReviewVie
     @Override
     public void onBindViewHolder(DetailActivity.ReviewViewHolder holder, int position) {
         final ReviewResults.ResultsBean review = rMovieList.get(position);
-/*TODO Need to figure out how to implement this to underline the web adress
-        SpannableString content = new SpannableString(holder.mWebsiteTextView.toString());
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-       */
 
         holder.mAuthorTextView.setText(review.getAuthor());
         holder.mContentTextView.setText(review.getContent());

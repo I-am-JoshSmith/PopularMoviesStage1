@@ -9,5 +9,6 @@
     
     <string name="spinner_top_rated_value">top_rated</string>
     <string name="spinner_popular_value">popular</string>
+    <string name="spinner_favorites_value">favorites</string>
 
 </resources>
