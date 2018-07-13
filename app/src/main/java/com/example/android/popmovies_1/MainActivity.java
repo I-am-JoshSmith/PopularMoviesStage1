@@ -17,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import com.idescout.sql.SqlScoutServer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // SQLScout PLUGIN
+        SqlScoutServer.create(this, getPackageName());
 
         mRecyclerView = findViewById(R.id.rv_Posters);
         mRecyclerView.setHasFixedSize(true);

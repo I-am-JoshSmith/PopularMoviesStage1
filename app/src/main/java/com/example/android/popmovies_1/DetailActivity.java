@@ -144,6 +144,7 @@ public class DetailActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
                 if (flag) {

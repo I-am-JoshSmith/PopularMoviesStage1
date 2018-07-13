@@ -72,7 +72,7 @@ public class MovieResults {
          * overview : A volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar, where the creatures have freely roamed for several years after the demise of an animal theme park known as Jurassic World. Claire Dearing, the former park manager, has now founded the Dinosaur Protection Group, an organization dedicated to protecting the dinosaurs. To help with her cause, Claire has recruited Owen Grady, a former dinosaur trainer who worked at the park, to prevent the extinction of the dinosaurs once again.
          * release_date : 2018-06-06
          */
-
+        @Ignore
         private int vote_count;
         @PrimaryKey(autoGenerate = false)
         private int id;

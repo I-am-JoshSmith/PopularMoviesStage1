@@ -26,8 +26,7 @@ public interface FavoritesDao {
     @Delete
     void deleteMovie(MovieResults.ResultsBean resultsBean);
 
-    /*
     @Query("SELECT * FROM favorites WHERE id = :id")
-    LiveData<MovieResults.ResultsBean> loadFavoriteById(int id);
-    */
+    MovieResults.ResultsBean loadFavoriteById(int id);
+
 }

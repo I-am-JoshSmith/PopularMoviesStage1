@@ -37,4 +37,8 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+
+    debugImplementation 'com.idescout.sql:sqlscout-server:4.1'
+    releaseImplementation 'com.idescout.sql:sqlscout-server-noop:4.1'
+    implementation 'com.idescout.sql:sqlscout-server:4.0'
 }
