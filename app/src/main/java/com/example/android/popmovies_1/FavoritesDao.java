@@ -17,8 +17,8 @@ import java.util.List;
 @Dao
 public interface FavoritesDao {
 
-    @android.arch.persistence.room.Query("SELECT * FROM favorites ORDER BY id")
-    List<MovieResults.ResultsBean> loadAllMovies();
+    @android.arch.persistence.room.Query("SELECT * FROM favorites ORDER BY title")
+    LiveData<List<MovieResults.ResultsBean>> loadAllMovies();
 
     @Insert
     void insertMovie (MovieResults.ResultsBean resultsBean);
@@ -27,6 +27,6 @@ public interface FavoritesDao {
     void deleteMovie(MovieResults.ResultsBean resultsBean);
 
     @Query("SELECT * FROM favorites WHERE id = :id")
-    MovieResults.ResultsBean loadFavoriteById(int id);
+    LiveData<MovieResults.ResultsBean> loadFavoriteById(int id);
 
 }

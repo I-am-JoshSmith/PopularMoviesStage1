@@ -27,7 +27,7 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
 
     }
 
-    public static List<MovieResults.ResultsBean> getMovieList() {
+    public static List<MovieResults.ResultsBean> getMovieList(List<MovieResults.ResultsBean> favorites) {
         return mMovieList;
     }
 

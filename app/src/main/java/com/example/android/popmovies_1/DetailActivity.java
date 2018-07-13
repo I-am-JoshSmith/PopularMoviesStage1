@@ -1,6 +1,7 @@
 package com.example.android.popmovies_1;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Database;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -136,8 +137,6 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
 
-        // Floating Action Button -add/delete from favorites
-        //TODO - add code to buttons for adding and removing a movie from the favorites list
 
         mFab = findViewById(R.id.myFAB);
 
@@ -147,9 +146,15 @@ public class DetailActivity extends AppCompatActivity {
 
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
+                 /* NEED TO FIGURE OUT HOW TO CHECK IF MOVIE IS PART OF THE FAVORITES LIST AND IF SO SET THE FLAG TO TRUE
+
+                    if (resultsBean == LiveData<MovieResults.ResultsBean> resultsBean.getId()) {
+                        flag = true;
+                    })
+
+                */
                 if (flag) {
-                    // need to figure out how to set the ripple on and off click - future plans for app leaving code here for reference
-                    //mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
+
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                     flag = false;
                     Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
@@ -188,6 +193,7 @@ public class DetailActivity extends AppCompatActivity {
             }
 
         });
+
 
 
         getTrailers();

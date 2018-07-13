@@ -2,7 +2,10 @@ package com.example.android.popmovies_1;
 
 //test1
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> catagories = new ArrayList<String>();
         catagories.add(MOVIE_TYPE_POPULAR);
         catagories.add(MOVIE_TYPE_TOP_RATED);
+        catagories.add(MOVIE_TYPE_FAVORITES);
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, catagories);
@@ -142,10 +146,26 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.api_key),
                         getString(R.string.language),
                         1);
+                break;
+            case (MOVIE_TYPE_FAVORITES):
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        final LiveData<List<MovieResults.ResultsBean>> favorites = mDb.favoritesDao().loadAllMovies();
+                        favorites.observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
+                            @Override
+                            public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
+                                Log.d("LiveData", "Recieving databasr update from LiveData");
+                                mRecyclerView.removeAllViews();
+                                mAdapter.setMovies(resultsBeans);
+                                mAdapter.notifyDataSetChanged();
 
-            // TODO - Need to implement favorites spinner selection and database
-            // case (FAVORITES):
-            //    break;
+
+                            }
+                        });
+
+                    }
+                });
 
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
                 break;
