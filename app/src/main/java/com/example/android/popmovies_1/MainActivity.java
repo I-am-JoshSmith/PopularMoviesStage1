@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String MOVIE_TYPE_TOP_RATED = "Top Rated";
     private static final String MOVIE_TYPE_POPULAR = "Most Popular";
+    private static final String MOVIE_TYPE_FAVORITES = "Favorites";
+
+    private FavoritesDatabase mDb;
 
 
     @Override
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     //method to update category with selected item from spinner
 
     private void updateCategory(AdapterView spinner) {
@@ -171,7 +175,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
     });
+            mDb = FavoritesDatabase.getInstance((getApplicationContext()));
+
 
     }
+
 }
 }

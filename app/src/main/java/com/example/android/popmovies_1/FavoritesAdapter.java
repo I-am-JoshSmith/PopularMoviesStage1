@@ -12,23 +12,18 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> {
+public class FavoritesAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> {
 
 
-
-    private static List<MovieResults.ResultsBean> mMovieList;
+    private List<MovieResults.ResultsBean> mMovieList;
     private LayoutInflater mInflater;
     private final Context mContext;
 
-    public Adapter(Context context)
+    public FavoritesAdapter(Context context)
     {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
 
-    }
-
-    public static List<MovieResults.ResultsBean> getMovieList() {
-        return mMovieList;
     }
 
     @Override
@@ -40,26 +35,26 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MainActivity.MovieViewHolder holder, final int position) {
+    public void onBindViewHolder(MainActivity.MovieViewHolder holder, int position) {
         final MovieResults.ResultsBean movie = mMovieList.get(position);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, DetailActivity.class);
-                    intent.putExtra("title",movie.getTitle());
-                    intent.putExtra("votes",movie.getVote_average());
-                    intent.putExtra("date",movie.getRelease_date());
-                    intent.putExtra("overview",movie.getOverview());
-                    intent.putExtra("backdrop",movie.getBackdrop_path());
-                    intent.putExtra("poster",movie.getPoster_path());
-                    intent.putExtra("movieId",movie.getId());
-                    mContext.startActivity(intent);
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra("title",movie.getTitle());
+                intent.putExtra("votes",movie.getVote_average());
+                intent.putExtra("date",movie.getRelease_date());
+                intent.putExtra("overview",movie.getOverview());
+                intent.putExtra("backdrop",movie.getBackdrop_path());
+                intent.putExtra("poster",movie.getPoster_path());
+                intent.putExtra("movieId",movie.getId());
+                mContext.startActivity(intent);
 
 
-                }
-            });
+            }
+        });
 
 
         Picasso.get()
@@ -77,6 +72,5 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
     public void setMovies(List<MovieResults.ResultsBean> movieList){
         mMovieList = movieList;
     }
-
 
 }

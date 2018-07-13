@@ -1,6 +1,7 @@
 package com.example.android.popmovies_1;
 
 
+import android.arch.persistence.room.Database;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -52,14 +53,14 @@ public class DetailActivity extends AppCompatActivity {
     boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
 
-
-
-
+    private Adapter aAdaptor;
     private TrailerAdapter tAdapter;
     private ReviewAdapter rAdapter;
 
+    private FavoritesDatabase mDb;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
@@ -82,6 +83,8 @@ public class DetailActivity extends AppCompatActivity {
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
 
+        // initialize member variable for the database
+        mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
@@ -141,6 +144,7 @@ public class DetailActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
                 if (flag) {
                     // need to figure out how to set the ripple on and off click - future plans for app leaving code here for reference
@@ -149,11 +153,34 @@ public class DetailActivity extends AppCompatActivity {
                     flag = false;
                     Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
+                    //add movie to favorites database
+
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDb.favoritesDao().insertMovie(resultsBean);
+
+                        }
+                    });
+
+
+
                 } else if (!flag) {
                     // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
                     flag = true;
                     Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
+
+                    //remove movie from favorites
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            //int mId = DetailActivity.this.movieId;
+                            //final List<MovieResults.ResultsBean> resultsBean = Adapter.getMovieList();
+                            mDb.favoritesDao().deleteMovie(resultsBean);
+                        }
+                    });
 
                 }
 
