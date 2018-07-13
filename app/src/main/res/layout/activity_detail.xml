@@ -20,7 +20,7 @@
             android:background="#212121"
             android:cropToPadding="true"
             android:padding="2dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
