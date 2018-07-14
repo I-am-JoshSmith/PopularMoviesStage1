@@ -2,10 +2,13 @@ package com.example.android.popmovies_1;
 
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Database;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -141,18 +144,27 @@ public class DetailActivity extends AppCompatActivity {
         mFab = findViewById(R.id.myFAB);
 
         mFab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
-                 /* NEED TO FIGURE OUT HOW TO CHECK IF MOVIE IS PART OF THE FAVORITES LIST AND IF SO SET THE FLAG TO TRUE
+                 // NEED TO FIGURE OUT HOW TO CHECK IF MOVIE IS PART OF THE FAVORITES LIST AND IF SO SET THE FLAG TO TRUE
+                MainViewModel viewModel = ViewModelProviders.of(DetailActivity.this).get(MainViewModel.class);
+                viewModel.getFavorites().observe(DetailActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
 
-                    if (resultsBean == LiveData<MovieResults.ResultsBean> resultsBean.getId()) {
-                        flag = true;
-                    })
+                    @Override
+                    public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
+                        if (resultsBean.getId() == movieId) {
+                            mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+                            flag = false;
+                        }
+                    }
+                });
 
-                */
+
+
                 if (flag) {
 
                     mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
