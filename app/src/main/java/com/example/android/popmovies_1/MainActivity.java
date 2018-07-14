@@ -4,6 +4,7 @@ package com.example.android.popmovies_1;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,8 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
-import com.idescout.sql.SqlScoutServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String MOVIE_TYPE_POPULAR = "Most Popular";
     private static final String MOVIE_TYPE_FAVORITES = "Favorites";
 
+
     private FavoritesDatabase mDb;
 
 
@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // SQLScout PLUGIN
-        SqlScoutServer.create(this, getPackageName());
 
         mRecyclerView = findViewById(R.id.rv_Posters);
         mRecyclerView.setHasFixedSize(true);
@@ -150,20 +147,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case (MOVIE_TYPE_FAVORITES):
 
-                        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-                        viewModel.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
-                            @Override
-                            public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
-                                Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
-                                mRecyclerView.removeAllViews();
-                                mAdapter.setMovies(resultsBeans);
-                                mAdapter.notifyDataSetChanged();
-
-                            }
-                        });
+                    returnViewModel();
 
 
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
+
                 break;
 
         }
@@ -197,10 +185,31 @@ public class MainActivity extends AppCompatActivity {
             }
 
     });
-            mDb = FavoritesDatabase.getInstance((getApplicationContext()));
+
+
+
 
 
     }
+        mDb = FavoritesDatabase.getInstance((getApplicationContext()));
+
 
 }
+
+    private void returnViewModel() {
+        final MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
+                Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
+
+                    mRecyclerView.removeAllViews();
+                    mAdapter.setMovies(resultsBeans);
+                    mAdapter.notifyDataSetChanged();
+
+
+            }
+
+        });
+    }
 }
