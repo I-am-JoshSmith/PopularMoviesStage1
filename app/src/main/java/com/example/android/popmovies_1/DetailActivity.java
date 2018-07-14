@@ -150,6 +150,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
+                /*
                  // NEED TO FIGURE OUT HOW TO CHECK IF MOVIE IS PART OF THE FAVORITES LIST AND IF SO SET THE FLAG TO TRUE
                 MainViewModel viewModel = ViewModelProviders.of(DetailActivity.this).get(MainViewModel.class);
                 viewModel.getFavorites().observe(DetailActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
@@ -163,7 +164,7 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 });
 
-
+*/
 
                 if (flag) {
 
