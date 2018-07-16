@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FavoritesDatabase mDb;
     private MainViewModel viewModel;
-    private LiveData<List<MovieResults.ResultsBean>> liveMovieList;
-
 
 
     @Override
@@ -128,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateCategory(AdapterView spinner) {
         category = spinner.getSelectedItem().toString();
 
-        liveMovieList = viewModel.getFavorites();
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.base_url))
@@ -156,11 +154,15 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case (MOVIE_TYPE_FAVORITES):
 
+                returnViewModel();
+                //This gets the list from LiveData
+                LiveData<List<MovieResults.ResultsBean>> liveMovieList = viewModel.getFavorites();
 
-                mRecyclerView.removeAllViews();
-                mAdapter.setLiveMovies(liveMovieList);
-                mAdapter.notifyDataSetChanged();
-
+                if (liveMovieList != null){
+                    mRecyclerView.removeAllViews();
+                    mAdapter.setLiveMovies(liveMovieList);
+                    mAdapter.notifyDataSetChanged();
+                }
 
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
 
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-        returnViewModel();
+
 
 }
 
@@ -217,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
+
 
 
 
