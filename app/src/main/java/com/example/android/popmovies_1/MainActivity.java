@@ -155,14 +155,7 @@ public class MainActivity extends AppCompatActivity {
             case (MOVIE_TYPE_FAVORITES):
 
                 returnViewModel();
-                //This gets the list from LiveData
-                LiveData<List<MovieResults.ResultsBean>> liveMovieList = viewModel.getFavorites();
 
-                if (liveMovieList != null){
-                    mRecyclerView.removeAllViews();
-                    mAdapter.setLiveMovies(liveMovieList);
-                    mAdapter.notifyDataSetChanged();
-                }
 
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
 
@@ -217,7 +210,14 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
                 Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
 
+                //This gets the list from LiveData
+                LiveData<List<MovieResults.ResultsBean>> liveMovieList = viewModel.getFavorites();
 
+                if (liveMovieList != null){
+                    mRecyclerView.removeAllViews();
+                    mAdapter.setLiveMovies(liveMovieList);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
 
 
