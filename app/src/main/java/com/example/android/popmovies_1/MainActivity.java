@@ -4,7 +4,6 @@ package com.example.android.popmovies_1;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import com.example.android.popmovies_1.database.FavoritesDatabase;
+import com.example.android.popmovies_1.database.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

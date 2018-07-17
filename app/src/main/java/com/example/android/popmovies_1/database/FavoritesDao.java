@@ -1,10 +1,12 @@
-package com.example.android.popmovies_1;
+package com.example.android.popmovies_1.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
+import com.example.android.popmovies_1.MovieResults;
 
 import java.util.List;
 
