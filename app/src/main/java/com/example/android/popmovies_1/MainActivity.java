@@ -4,6 +4,7 @@ package com.example.android.popmovies_1;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -32,9 +33,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
     public String category;
+
 
     private static final String MOVIE_TYPE_TOP_RATED = "Top Rated";
     private static final String MOVIE_TYPE_POPULAR = "Most Popular";
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         mDb = FavoritesDatabase.getInstance((getApplicationContext()));
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+
 
 
 
@@ -154,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             case (MOVIE_TYPE_FAVORITES):
 
                 returnViewModel();
-               valueSpinner = spinner.getSelectedItem().toString();
+
 
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
 
@@ -193,9 +198,6 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-
-
-
     }
 
 
@@ -223,4 +225,5 @@ public class MainActivity extends AppCompatActivity {
             });
 
     }
+
 }

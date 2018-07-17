@@ -89,9 +89,10 @@ public class DetailActivity extends AppCompatActivity {
 
 
         // trying to check if current movie already exists in database
-        FavoriteViewModelFactory factory = new FavoriteViewModelFactory(mDb, movieId);
-        final FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
-/* Attempt to check if movie exists in database amd is so set the FAB button flag to false
+       // FavoriteViewModelFactory factory = new FavoriteViewModelFactory(mDb, movieId);
+       // final FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
+
+/*
 
         viewModel.getFavorite(movieId) = this.movieId
         if(){
