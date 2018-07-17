@@ -15,7 +15,7 @@ public class FavoriteViewModel extends ViewModel{
         favorite = database.favoritesDao().loadFavoriteById(movieId);
     }
 
-    private LiveData<MovieResults.ResultsBean> getFavorite(){
+    public LiveData<MovieResults.ResultsBean> getFavorite(){
         return favorite;
     }
 

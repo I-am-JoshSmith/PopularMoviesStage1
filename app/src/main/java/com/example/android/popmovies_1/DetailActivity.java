@@ -3,6 +3,7 @@ package com.example.android.popmovies_1;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Database;
 import android.content.res.ColorStateList;
@@ -87,8 +88,17 @@ public class DetailActivity extends AppCompatActivity {
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
 
-        // initialize member variable for the database
-        mDb = FavoritesDatabase.getInstance(getApplicationContext());
+        // trying to check if current movie already exists in database
+        FavoriteViewModelFactory factory = new FavoriteViewModelFactory(mDb, movieId);
+        final FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
+/* Attempt to check if movie exists in database amd is so set the FAB button flag to false
+
+        viewModel.getFavorite(movieId) = this.movieId
+        if(){
+            flag = false;
+        }
+
+*/
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
@@ -149,23 +159,6 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
-
-                /*
-                 // NEED TO FIGURE OUT HOW TO CHECK IF MOVIE IS PART OF THE FAVORITES LIST AND IF SO SET THE FLAG TO TRUE
-                 This code is wrong.
-                MainViewModel viewModel = ViewModelProviders.of(DetailActivity.this).get(MainViewModel.class);
-                viewModel.getFavorites().observe(DetailActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
-
-                    @Override
-                    public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
-                        if (resultsBean.getId() == movieId) {
-                            mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-                            flag = false;
-                        }
-                    }
-                });
-
-*/
 
                 if (flag) {
 
