@@ -152,6 +152,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 /*
                  // NEED TO FIGURE OUT HOW TO CHECK IF MOVIE IS PART OF THE FAVORITES LIST AND IF SO SET THE FLAG TO TRUE
+                 This code is wrong.
                 MainViewModel viewModel = ViewModelProviders.of(DetailActivity.this).get(MainViewModel.class);
                 viewModel.getFavorites().observe(DetailActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
 
@@ -195,8 +196,7 @@ public class DetailActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            //int mId = DetailActivity.this.movieId;
-                            //final List<MovieResults.ResultsBean> resultsBean = Adapter.getMovieList();
+
                             mDb.favoritesDao().deleteMovie(resultsBean);
                         }
                     });
@@ -248,7 +248,7 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NonNull Call<TrailerResults> call, @NonNull Response<TrailerResults> response) {
 
-                    //results is the name of the inner list in the MovieResults json querry
+                    //results is the name of the inner list in the MovieResults json query
                     TrailerResults results = response.body();
 
                     //This gets the list of Movie Results
@@ -296,7 +296,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getReviews() {
-        // retrofit call to load trailers and reviews
+        // retrofit call to load reviews
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.base_url))
@@ -304,7 +304,7 @@ public class DetailActivity extends AppCompatActivity {
                 .build();
 
 
-        //this call creates the retrofit object and passes in the ApiIntrerface into the myInterface object
+        //this call creates the retrofit object and passes in the ApiIntrerface into the reviewInterface object
         ReviewInterface reviewInterface = retrofit.create(ReviewInterface.class);
 
 

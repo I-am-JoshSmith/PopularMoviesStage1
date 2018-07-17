@@ -79,6 +79,8 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
     public void setMovies(List<MovieResults.ResultsBean> movieList){
         mMovieList = movieList;
     }
+
+    //bad attempt to get just the live data - leaving here for now to remember my progress
     public void setLiveMovies(LiveData<List<MovieResults.ResultsBean>> liveMovieList){
         mLiveMovieList = liveMovieList;
     }

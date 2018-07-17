@@ -2,9 +2,7 @@ package com.example.android.popmovies_1;
 
 //test1
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FavoritesDatabase mDb;
     private MainViewModel viewModel;
+    private String valueSpinner = null;
 
 
     @Override
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Spinner
+    // Spinner to select display category (Top Rated, Most Popular, Favorites)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     //method to update category with selected item from spinner
 
-    private void updateCategory(AdapterView spinner) {
+    private String updateCategory(AdapterView spinner) {
         category = spinner.getSelectedItem().toString();
 
 
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             case (MOVIE_TYPE_FAVORITES):
 
                 returnViewModel();
-
+               valueSpinner = spinner.getSelectedItem().toString();
 
                 Log.d("Category", "cat:" + MOVIE_TYPE_TOP_RATED);
 
@@ -200,29 +199,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-}
-
+        return null;
+    }
+// Attempt at getting ViewModel/LiveData to populate the recyclerView when the Favorites Spinner is selected
     private void returnViewModel() {
-        final MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
-            @Override
-            public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
-                Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
 
-                //This gets the list from LiveData
-                LiveData<List<MovieResults.ResultsBean>> liveMovieList = viewModel.getFavorites();
 
-                if (liveMovieList != null){
+            final MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+            viewModel.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
+
+                @Override
+                public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
+                    Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
+
+
                     mRecyclerView.removeAllViews();
-                    mAdapter.setLiveMovies(liveMovieList);
+                    mAdapter.setMovies(resultsBeans);
                     mAdapter.notifyDataSetChanged();
+
                 }
-            }
 
 
+            });
 
-
-        });
     }
 }
