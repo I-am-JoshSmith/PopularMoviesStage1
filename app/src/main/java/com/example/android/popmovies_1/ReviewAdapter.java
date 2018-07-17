@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -37,7 +38,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<DetailActivity.ReviewVie
     }
 
     @Override
-    public DetailActivity.ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public DetailActivity.ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View view = rInflater.inflate(R.layout.review_list_item, parent, false);
         DetailActivity.ReviewViewHolder viewHolder = new DetailActivity.ReviewViewHolder(view);
