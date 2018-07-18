@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         mDb = FavoritesDatabase.getInstance((getApplicationContext()));
+
         viewModel = ViewModelProviders.of(MainActivity.this).get(ParcelableViewModel.class);
 
 
@@ -242,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(bundle);
         viewModel.writeTo(bundle);
     }
-
 
 
 }
