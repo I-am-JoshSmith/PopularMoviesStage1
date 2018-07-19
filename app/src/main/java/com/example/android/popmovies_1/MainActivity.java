@@ -3,16 +3,12 @@ package com.example.android.popmovies_1;
 //test1
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.Movie;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.util.Log;
@@ -27,7 +23,7 @@ import android.widget.Spinner;
 
 import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.example.android.popmovies_1.database.MainViewModel;
-import com.example.android.popmovies_1.database.ParcelableViewModel;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FavoritesDatabase mDb;
-    private ParcelableViewModel viewModel;
-
 
 
 
@@ -72,11 +66,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         mDb = FavoritesDatabase.getInstance((getApplicationContext()));
-
-        viewModel = ViewModelProviders.of(MainActivity.this).get(ParcelableViewModel.class);
-
-
-
 
 
 
@@ -238,11 +227,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        viewModel.writeTo(bundle);
     }
 
 
-}
+
