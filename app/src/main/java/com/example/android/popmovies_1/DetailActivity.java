@@ -1,6 +1,7 @@
 package com.example.android.popmovies_1;
 //Test
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -14,12 +15,15 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popmovies_1.database.AppExecutors;
+import com.example.android.popmovies_1.database.FavoriteViewModel;
+import com.example.android.popmovies_1.database.FavoriteViewModelFactory;
 import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +46,6 @@ public class DetailActivity extends AppCompatActivity {
     String myOverview;
     String myBackdrop;
     String myPoster;
-    Integer myTrailer;
     TextView mVotes;
     TextView mDate;
     TextView mOverview;
@@ -83,17 +86,24 @@ public class DetailActivity extends AppCompatActivity {
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
 
-        // trying to check if current movie already exists in database
-       // FavoriteViewModelFactory factory = new FavoriteViewModelFactory(mDb, movieId);
-       // final FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
+/* TODO trying to check livedata if current movie displayed is already in the database and set the flag of the FAB accordingly
 
-/*
+        FavoriteViewModelFactory factory =
+                new FavoriteViewModelFactory(mDb, movieId);
 
-        viewModel.getFavorite(movieId) = this.movieId
-        if(){
-            flag = false;
-        }
+        FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
+        Integer tableId = viewModel.getFavorite(movieId);
 
+
+            switch (mDb.favoritesDao().loadFavoriteById(movieId)) {
+                case 0: //not in database
+                    flag = false;
+                    break;
+                case 1: //exists in database
+                    flag = true;
+                    break;
+                default: // error
+            }
 */
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());

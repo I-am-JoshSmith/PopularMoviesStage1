@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.android.popmovies_1.MovieResults;
-import com.example.android.popmovies_1.database.FavoritesDatabase;
 
 /**
  * Created by Grimlock on 7/15/18.
