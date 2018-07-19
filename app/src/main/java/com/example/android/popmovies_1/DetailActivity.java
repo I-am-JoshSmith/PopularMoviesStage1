@@ -63,10 +63,9 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mDb = FavoritesDatabase.getInstance(getApplicationContext());
-
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mVotes = findViewById(R.id.user_rating);
         mDate = findViewById(R.id.release_date);
@@ -96,6 +95,8 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 */
+        //initialize member variable for the database
+        mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
