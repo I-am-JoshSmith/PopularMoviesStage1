@@ -53,7 +53,6 @@ public class DetailActivity extends AppCompatActivity {
     boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
 
-    private Adapter aAdaptor;
     private TrailerAdapter tAdapter;
     private ReviewAdapter rAdapter;
 
@@ -65,6 +64,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
 
         mVotes = findViewById(R.id.user_rating);
@@ -184,8 +185,6 @@ public class DetailActivity extends AppCompatActivity {
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
-
-
                             mDb.favoritesDao().deleteMovie(resultsBean);
                         }
                     });
