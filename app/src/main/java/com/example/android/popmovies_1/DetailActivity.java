@@ -95,7 +95,7 @@ public class DetailActivity extends AppCompatActivity {
 
         //run checkifFavorite method to compare current movie against
         // LiveData and if movie exists in live data set the FAB buttons flag accordingly
-        checkIfFavorite();
+
 
 
 
@@ -152,8 +152,9 @@ public class DetailActivity extends AppCompatActivity {
 
 
         mFab = findViewById(R.id.myFAB);
-
+        checkIfFavorite();
         mFab.setOnClickListener(new View.OnClickListener() {
+
 
             @Override
             public void onClick(View view) {
@@ -213,20 +214,17 @@ public class DetailActivity extends AppCompatActivity {
                 new FavoriteViewModelFactory(mDb, movieId);
         if (factory != null) {
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
-            // if the querry returns and is not null
-            if (viewModel.getFavorite() != null) {
-                LiveData<MovieResults.ResultsBean> favoriteMovie = viewModel.getFavorite();
-
-                // if not null set the fab to orange and flag to true
-                if (favoriteMovie != null) {
+            // if the query returns and is not null
+            if (viewModel.getFavorite() == null) {
+                // if null set the fab to grey and flag to true
                     if (mFab != null) {
-                        mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+                        mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
                         flag = true;
                     }
                 }
             }
         }
-    }
+
 
 
     public static class TrailerViewHolder extends RecyclerView.ViewHolder {
