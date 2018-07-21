@@ -3,12 +3,17 @@ package com.example.android.popmovies_1;
 //test1
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Movie;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.util.Log;
@@ -22,8 +27,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.android.popmovies_1.database.FavoritesDatabase;
+import com.example.android.popmovies_1.database.MainActivityViewModelFactory;
 import com.example.android.popmovies_1.database.MainViewModel;
-
+import com.example.android.popmovies_1.database.ParcelableViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FavoritesDatabase mDb;
-
-
+    public ParcelableViewModel viewModel;
+    public MainActivityViewModelFactory factory;
+    public Bundle bundle;
+    public ViewModelProvider.Factory provider;
 
 
     @Override
@@ -68,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         mDb = FavoritesDatabase.getInstance((getApplicationContext()));
 
 
+        factory = new MainActivityViewModelFactory(bundle, provider);
+        if (viewModel != null) {
+            viewModel = ViewModelProviders.of(this, factory).get(ParcelableViewModel.class);
+        }
 
 
     }
@@ -130,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         category = spinner.getSelectedItem().toString();
 
 
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.base_url))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -141,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         Call<MovieResults> call = null;
 
-        switch (spinner.getSelectedItem().toString()){
+        switch (spinner.getSelectedItem().toString()) {
             case (MOVIE_TYPE_POPULAR):
                 call = myInterface.getMovies(getString(R.string.spinner_popular_value),
                         getString(R.string.api_key),
@@ -165,69 +176,83 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
         }
-        if (call != null){
-        call.enqueue(new Callback<MovieResults>() {
-                         @Override
-                         public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
+        if (call != null) {
+            call.enqueue(new Callback<MovieResults>() {
+                @Override
+                public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
 
-                             //results is the name of the inner list in the MovieResults json querry
-                             MovieResults results = response.body();
+                    //results is the name of the inner list in the MovieResults json querry
+                    MovieResults results = response.body();
 
-                             //This gets the list of Movie Results
-                             List<MovieResults.ResultsBean> listOfMovies = null;
-                             if (results != null) {
-                                 listOfMovies = results.getResults();
-                             }
+                    //This gets the list of Movie Results
+                    List<MovieResults.ResultsBean> listOfMovies = null;
+                    if (results != null) {
+                        listOfMovies = results.getResults();
+                    }
 
-                             if (listOfMovies != null) {
-                                 mRecyclerView.removeAllViews();
-                                 mAdapter.setMovies(listOfMovies);
-                                 mAdapter.notifyDataSetChanged();
+                    if (listOfMovies != null) {
+                        mRecyclerView.removeAllViews();
+                        mAdapter.setMovies(listOfMovies);
+                        mAdapter.notifyDataSetChanged();
 
-                             }
-
-
-                         }
-
-            @Override
-            public void onFailure(Call<MovieResults> call, Throwable t) {
-                t.printStackTrace();
-
-            }
-
-    });
+                    }
 
 
-    }
+                }
+
+                @Override
+                public void onFailure(Call<MovieResults> call, Throwable t) {
+                    t.printStackTrace();
+
+                }
+
+            });
+
+
+        }
 
 
         return null;
     }
-// Attempt at getting ViewModel/LiveData to populate the recyclerView when the Favorites Spinner is selected
+
+    // Attempt at getting ViewModel/LiveData to populate the recyclerView when the Favorites Spinner is selected
     private void returnViewModel() {
 
 
-            final MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-            viewModel.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
+        final MainViewModel viewModel1 = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel1.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
 
-                @Override
-                public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
-                    Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
-
-
-                    mRecyclerView.removeAllViews();
-                    mAdapter.setMovies(resultsBeans);
-                    mAdapter.notifyDataSetChanged();
-
-                }
+            @Override
+            public void onChanged(@Nullable List<MovieResults.ResultsBean> resultsBeans) {
+                Log.d("LiveData", "Recieving databasr update from LiveData in ViewModel");
 
 
-            });
+                //mRecyclerView.removeAllViews();
+                mAdapter.setMovies(resultsBeans);
+                mAdapter.notifyDataSetChanged();
 
-    }
+            }
 
+
+        });
 
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        if (viewModel != null) {
+            viewModel.writeTo(bundle);
+        }
 
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+
+
+    }
+
+}
