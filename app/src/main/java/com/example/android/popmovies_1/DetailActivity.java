@@ -93,6 +93,8 @@ public class DetailActivity extends AppCompatActivity {
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
+        //run checkifFavorite method to compare current movie against
+        // LiveData and if movie exists in live data set the FAB buttons flag accordingly
         checkIfFavorite();
 
 
