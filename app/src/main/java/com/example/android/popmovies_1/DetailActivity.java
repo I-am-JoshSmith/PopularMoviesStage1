@@ -213,10 +213,11 @@ public class DetailActivity extends AppCompatActivity {
                 new FavoriteViewModelFactory(mDb, movieId);
         if (factory != null) {
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
+            // if the querry returns and is not null
             if (viewModel.getFavorite() != null) {
                 LiveData<MovieResults.ResultsBean> favoriteMovie = viewModel.getFavorite();
 
-                // call to method that checks if movie is in database
+                // if not null set the fab to orange and flag to true
                 if (favoriteMovie != null) {
                     if (mFab != null) {
                         mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
