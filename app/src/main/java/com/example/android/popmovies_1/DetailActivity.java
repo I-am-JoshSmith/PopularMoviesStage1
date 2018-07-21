@@ -211,7 +211,7 @@ public class DetailActivity extends AppCompatActivity {
                 new FavoriteViewModelFactory(mDb, movieId);
         if (factory != null) {
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
-            if (viewModel.getFavorite() == null) {
+            if (viewModel.getFavorite() != null) {
                 LiveData<MovieResults.ResultsBean> favoriteMovie = viewModel.getFavorite();
 
                 // call to method that checks if movie is in database
