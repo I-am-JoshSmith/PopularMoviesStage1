@@ -1,11 +1,10 @@
 package com.example.android.popmovies_1;
 //Test
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +29,6 @@ import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,13 +54,15 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mPoster;
     ImageView mTrailer;
     FloatingActionButton mFab;
-    boolean flag; // true clicked/added to favorites, false not clicked.
+    boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
 
     private TrailerAdapter tAdapter;
     private ReviewAdapter rAdapter;
 
     private FavoritesDatabase mDb;
+    private SharedPreferences favoritesList;
+    private static final String SHARED_PREFERENCES = "preferences";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -89,6 +88,7 @@ public class DetailActivity extends AppCompatActivity {
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
+        final String isFavorite = movieId.toString();
 
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
@@ -96,6 +96,12 @@ public class DetailActivity extends AppCompatActivity {
         //run checkifFavorite method to compare current movie against
         // LiveData and if movie exists in live data set the FAB buttons flag accordingly
 
+        favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        boolean favoriteChecked = favoritesList.getBoolean(isFavorite, false);
+        Log.d("FavaoriteList", "FavoriteID"+favoritesList.getBoolean(isFavorite, true));
+        if (favoriteChecked) {
+            flag = true;
+        }
 
 
 
@@ -152,7 +158,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
         mFab = findViewById(R.id.myFAB);
-        checkIfFavorite();
+        //checkIfFavorite();
         mFab.setOnClickListener(new View.OnClickListener() {
 
 
@@ -173,6 +179,9 @@ public class DetailActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             mDb.favoritesDao().insertMovie(resultsBean);
+                            favoritesList.edit()
+                                    .putBoolean(isFavorite, false)
+                                    .apply();
 
                         }
                     });
@@ -190,6 +199,9 @@ public class DetailActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             mDb.favoritesDao().deleteMovie(resultsBean);
+                            favoritesList.edit()
+                                    .putBoolean(isFavorite, true)
+                                    .apply();
                         }
                     });
 
@@ -212,10 +224,12 @@ public class DetailActivity extends AppCompatActivity {
         //get instances of the factory and viewModel
         FavoriteViewModelFactory factory =
                 new FavoriteViewModelFactory(mDb, movieId);
-        if (factory != null) {
+
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
             // if the query returns and is not null
-            if (viewModel.getFavorite() == null) {
+            Log.d("ViewModel","ViewModel="+viewModel.getFavorite(movieId));
+
+            if (viewModel.getFavorite(movieId) == null) {
                 // if null set the fab to grey and flag to true
                     if (mFab != null) {
                         mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
@@ -223,7 +237,7 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 }
             }
-        }
+
 
 
 
