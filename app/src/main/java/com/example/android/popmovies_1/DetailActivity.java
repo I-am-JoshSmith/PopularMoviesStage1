@@ -1,9 +1,11 @@
 package com.example.android.popmovies_1;
 //Test
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +57,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mPoster;
     ImageView mTrailer;
     FloatingActionButton mFab;
-    boolean flag = true; // true clicked/added to favorites, false not clicked.
+    boolean flag; // true clicked/added to favorites, false not clicked.
     Integer movieId;
 
     private TrailerAdapter tAdapter;
@@ -66,7 +70,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -86,27 +90,13 @@ public class DetailActivity extends AppCompatActivity {
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
 
-/* TODO trying to check livedata if current movie displayed is already in the database and set the flag of the FAB accordingly
-
-        FavoriteViewModelFactory factory =
-                new FavoriteViewModelFactory(mDb, movieId);
-
-        FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
-        Integer tableId = viewModel.getFavorite(movieId);
-
-
-            switch (mDb.favoritesDao().loadFavoriteById(movieId)) {
-                case 0: //not in database
-                    flag = false;
-                    break;
-                case 1: //exists in database
-                    flag = true;
-                    break;
-                default: // error
-            }
-*/
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
+
+        checkIfFavorite();
+
+
+
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
@@ -214,6 +204,27 @@ public class DetailActivity extends AppCompatActivity {
 
 
     }
+
+    private void checkIfFavorite() {
+        //get instances of the factory and viewModel
+        FavoriteViewModelFactory factory =
+                new FavoriteViewModelFactory(mDb, movieId);
+        if (factory != null) {
+            FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
+            if (viewModel.getFavorite() == null) {
+                LiveData<MovieResults.ResultsBean> favoriteMovie = viewModel.getFavorite();
+
+                // call to method that checks if movie is in database
+                if (favoriteMovie != null) {
+                    if (mFab != null) {
+                        mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+                        flag = true;
+                    }
+                }
+            }
+        }
+    }
+
 
     public static class TrailerViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
