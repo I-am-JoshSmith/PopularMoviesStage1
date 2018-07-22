@@ -54,9 +54,10 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mPoster;
     ImageView mTrailer;
     FloatingActionButton mFab;
+    private boolean b;
     boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
-
+    String isFavorite;
     private TrailerAdapter tAdapter;
     private ReviewAdapter rAdapter;
 
@@ -88,22 +89,17 @@ public class DetailActivity extends AppCompatActivity {
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
 
-        final String isFavorite = movieId.toString();
 
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
-        //run checkifFavorite method to compare current movie against
-        // LiveData and if movie exists in live data set the FAB buttons flag accordingly
-
+        isFavorite = movieId.toString();
         favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        boolean favoriteChecked = favoritesList.getBoolean(isFavorite, false);
-        Log.d("FavaoriteList", "FavoriteID"+favoritesList.getBoolean(isFavorite, true));
-        if (favoriteChecked) {
-            flag = true;
+        boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
+
+        if (favoriteAdded) {
+            fabClicked(mFab, true);
         }
-
-
 
 
         //get just the year from the date string 0=year - 1=month - 2=date
@@ -155,21 +151,23 @@ public class DetailActivity extends AppCompatActivity {
                 .load("http://image.tmdb.org/t/p/w185/" + myPoster)
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
-
-
+    }
+    public boolean fabClicked(FloatingActionButton mFab, boolean b) {
+        this.mFab = mFab;
+        this.b = b;
         mFab = findViewById(R.id.myFAB);
         //checkIfFavorite();
+        final FloatingActionButton finalMFab = mFab;
         mFab.setOnClickListener(new View.OnClickListener() {
-
 
             @Override
             public void onClick(View view) {
 
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
-                if (flag) {
+                if (fabClicked(finalMFab, true)) {
 
-                    mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+                    finalMFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                     flag = false;
                     Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
@@ -187,10 +185,9 @@ public class DetailActivity extends AppCompatActivity {
                     });
 
 
-
-                } else if (!flag) {
+                } else if (fabClicked(finalMFab, false)) {
                     // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
-                    mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+                    finalMFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
                     flag = true;
                     Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
 
@@ -212,14 +209,13 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
-
         getTrailers();
         getReviews();
 
-
-
+return false;
     }
 
+/*
     private void checkIfFavorite() {
         //get instances of the factory and viewModel
         FavoriteViewModelFactory factory =
@@ -237,7 +233,7 @@ public class DetailActivity extends AppCompatActivity {
                     }
                 }
             }
-
+*/
 
 
 
