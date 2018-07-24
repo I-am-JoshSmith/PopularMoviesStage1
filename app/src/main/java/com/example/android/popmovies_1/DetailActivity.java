@@ -93,6 +93,7 @@ public class DetailActivity extends AppCompatActivity {
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
+        // check to see if movie is part of favorites list
         isFavorite = movieId.toString();
         favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
@@ -101,13 +102,13 @@ public class DetailActivity extends AppCompatActivity {
             fabClicked(mFab, true);
         }
 
+        //calls to retrive trailers and reviews
         getTrailers();
         getReviews();
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
         String[] out = input.split("-");
-
 
         mVotes.setText(valueOf(myVotes));
         mDate.setText(out[0]);
@@ -122,7 +123,6 @@ public class DetailActivity extends AppCompatActivity {
         mOverview.setText(sb);
 
         //RecyclerView - Trailers
-        //
         RecyclerView tRecyclerView = findViewById(R.id.rv_Trailers);
         tRecyclerView.setHasFixedSize(true);
 
@@ -133,7 +133,6 @@ public class DetailActivity extends AppCompatActivity {
         tRecyclerView.setAdapter(tAdapter);
 
         //RecyclerView - reviews
-        //
         RecyclerView rRecyclerView = findViewById(R.id.rv_Reviews);
         rRecyclerView.setHasFixedSize(true);
         rRecyclerView.setNestedScrollingEnabled(false);
