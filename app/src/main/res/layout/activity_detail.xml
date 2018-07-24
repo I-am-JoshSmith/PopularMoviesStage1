@@ -93,7 +93,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="#212121"
-            android:onClick="fabClicked"
             android:clickable="true"
             android:focusable="true"
             android:scaleType="fitCenter"

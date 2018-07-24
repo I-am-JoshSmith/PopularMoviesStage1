@@ -101,6 +101,8 @@ public class DetailActivity extends AppCompatActivity {
             fabClicked(mFab, true);
         }
 
+        getTrailers();
+        getReviews();
 
         //get just the year from the date string 0=year - 1=month - 2=date
         String input = myDate;
@@ -152,6 +154,7 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
     }
+
     public boolean fabClicked(FloatingActionButton mFab, boolean b) {
         this.mFab = mFab;
         this.b = b;
@@ -209,10 +212,9 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
-        getTrailers();
-        getReviews();
 
-return false;
+
+return true;
     }
 
 /*
