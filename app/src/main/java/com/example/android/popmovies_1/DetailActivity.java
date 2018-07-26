@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mPoster;
     ImageView mTrailer;
     FloatingActionButton mFab;
-    private boolean b;
+    boolean b;
     boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
     String isFavorite;
@@ -93,16 +93,19 @@ public class DetailActivity extends AppCompatActivity {
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
+
+
         // check to see if movie is part of favorites list
+        //
+        //
         isFavorite = movieId.toString();
         favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
-
         if (favoriteAdded) {
             fabClicked(mFab, true);
         }
 
-        //calls to retrive trailers and reviews
+        //calls to retrieve trailers and reviews
         getTrailers();
         getReviews();
 
@@ -110,25 +113,25 @@ public class DetailActivity extends AppCompatActivity {
         String input = myDate;
         String[] out = input.split("-");
 
-        mVotes.setText(valueOf(myVotes));
         mDate.setText(out[0]);
+
+        mVotes.setText(valueOf(myVotes));
+
         mOverview.setText(myOverview);
+
+        //set Title in action bar to Movie title
         getSupportActionBar().setTitle(myTitle);
 
+        // Use SpannableStringBuilder to make the first letter of the Overview larger than the rest of the text
         final SpannableStringBuilder sb = new SpannableStringBuilder(myOverview);
         final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
         sb.setSpan(new RelativeSizeSpan(1.3f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        //sb.setSpan(bss, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mOverview.setText(sb);
 
         //RecyclerView - Trailers
         RecyclerView tRecyclerView = findViewById(R.id.rv_Trailers);
         tRecyclerView.setHasFixedSize(true);
-
-
         tRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         tAdapter = new TrailerAdapter(this);
         tRecyclerView.setAdapter(tAdapter);
 
@@ -136,9 +139,7 @@ public class DetailActivity extends AppCompatActivity {
         RecyclerView rRecyclerView = findViewById(R.id.rv_Reviews);
         rRecyclerView.setHasFixedSize(true);
         rRecyclerView.setNestedScrollingEnabled(false);
-
         rRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         rAdapter = new ReviewAdapter(this);
         rRecyclerView.setAdapter(rAdapter);
 
@@ -157,17 +158,22 @@ public class DetailActivity extends AppCompatActivity {
     public boolean fabClicked(FloatingActionButton mFab, boolean b) {
         this.mFab = mFab;
         this.b = b;
+
         mFab = findViewById(R.id.myFAB);
         //checkIfFavorite();
+
         final FloatingActionButton finalMFab = mFab;
         mFab.setOnClickListener(new View.OnClickListener() {
+
+
+
 
             @Override
             public void onClick(View view) {
 
                 final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
-                if (fabClicked(finalMFab, true)) {
+                if (fabClicked(finalMFab, false)) {
 
                     finalMFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                     flag = false;
@@ -187,7 +193,7 @@ public class DetailActivity extends AppCompatActivity {
                     });
 
 
-                } else if (fabClicked(finalMFab, false)) {
+                } else if (fabClicked(finalMFab, true)) {
                     // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
                     finalMFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
                     flag = true;
@@ -209,10 +215,6 @@ public class DetailActivity extends AppCompatActivity {
             }
 
         });
-
-
-
-
 return true;
     }
 
