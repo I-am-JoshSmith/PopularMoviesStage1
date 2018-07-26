@@ -64,7 +64,7 @@ public class DetailActivity extends AppCompatActivity {
     private View.OnClickListener mFabListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            mFabClicked(mFab, b);
+            mFabClicked( b);
         }
     };
 
@@ -110,7 +110,7 @@ public class DetailActivity extends AppCompatActivity {
         favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
         if (favoriteAdded) {
-            mFabClicked(mFab, true);
+            mFabClicked(true);
         }
 
         //calls to retrieve trailers and reviews
@@ -163,52 +163,49 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mPoster);
     }
 
+
+
     // method recurses indefinatly... no idea how to fix
-    private boolean mFabClicked(FloatingActionButton mFab, boolean b) {
-    this.mFab = mFab;
-    this.b = b;
+    private boolean mFabClicked(boolean b) {
+        this.b = b;
 
-    final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
+        final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
+        if (mFabClicked(true) ){
+            // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
+            this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+            Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
 
-    if (mFabClicked(mFab, false)) {
+            //remove movie from favorites
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.favoritesDao().deleteMovie(resultsBean);
+                    favoritesList.edit()
+                            .putBoolean(isFavorite, true)
+                            .apply();
+                }
+            });
+        } else if (!mFabClicked(true)) {
 
-        this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-        Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
+            this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+            Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
-        //add movie to favorites database
+            //add movie to favorites database
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mDb.favoritesDao().insertMovie(resultsBean);
-                favoritesList.edit()
-                        .putBoolean(isFavorite, false)
-                        .apply();
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.favoritesDao().insertMovie(resultsBean);
+                    favoritesList.edit()
+                            .putBoolean(isFavorite,false)
+                            .apply();
 
-            }
-        });
+                }
+            });
 
-
-    } else if (mFabClicked(mFab, true)) {
-        // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
-        this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
-        Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
-
-        //remove movie from favorites
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                mDb.favoritesDao().deleteMovie(resultsBean);
-                favoritesList.edit()
-                        .putBoolean(isFavorite, true)
-                        .apply();
-            }
-        });
+        }
+        return true;
     }
-
-        return b;
-    }
-
 
 /*
     private void checkIfFavorite() {
