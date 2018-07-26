@@ -1,7 +1,6 @@
 package com.example.android.popmovies_1;
-//Test
 
-import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -16,15 +15,12 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popmovies_1.database.AppExecutors;
-import com.example.android.popmovies_1.database.FavoriteViewModel;
-import com.example.android.popmovies_1.database.FavoriteViewModelFactory;
 import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
@@ -53,9 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mBackdrop;
     ImageView mPoster;
     ImageView mTrailer;
-    FloatingActionButton mFab;
     boolean b;
-    boolean flag = true; // true clicked/added to favorites, false not clicked.
     Integer movieId;
     String isFavorite;
     private TrailerAdapter tAdapter;
@@ -65,6 +59,15 @@ public class DetailActivity extends AppCompatActivity {
     private SharedPreferences favoritesList;
     private static final String SHARED_PREFERENCES = "preferences";
 
+    public FloatingActionButton mFab;
+
+    private View.OnClickListener mFabListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mFabClicked(mFab, b);
+        }
+    };
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,11 @@ public class DetailActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        mFab = new FloatingActionButton(this);
+        mFab = findViewById(R.id.myFAB);
+        mFab.setOnClickListener(mFabListener);
+
 
         mVotes = findViewById(R.id.user_rating);
         mDate = findViewById(R.id.release_date);
@@ -102,7 +110,7 @@ public class DetailActivity extends AppCompatActivity {
         favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
         if (favoriteAdded) {
-            fabClicked(mFab, true);
+            mFabClicked(mFab, true);
         }
 
         //calls to retrieve trailers and reviews
@@ -155,68 +163,52 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mPoster);
     }
 
-    public boolean fabClicked(FloatingActionButton mFab, boolean b) {
-        this.mFab = mFab;
-        this.b = b;
+    // method recurses indefinatly... no idea how to fix
+    private boolean mFabClicked(FloatingActionButton mFab, boolean b) {
+    this.mFab = mFab;
+    this.b = b;
 
-        mFab = findViewById(R.id.myFAB);
-        //checkIfFavorite();
+    final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
 
-        final FloatingActionButton finalMFab = mFab;
-        mFab.setOnClickListener(new View.OnClickListener() {
+    if (mFabClicked(mFab, false)) {
 
+        this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+        Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
+        //add movie to favorites database
 
-
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
-            public void onClick(View view) {
-
-                final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
-
-                if (fabClicked(finalMFab, false)) {
-
-                    finalMFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-                    flag = false;
-                    Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
-
-                    //add movie to favorites database
-
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDb.favoritesDao().insertMovie(resultsBean);
-                            favoritesList.edit()
-                                    .putBoolean(isFavorite, false)
-                                    .apply();
-
-                        }
-                    });
-
-
-                } else if (fabClicked(finalMFab, true)) {
-                    // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
-                    finalMFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
-                    flag = true;
-                    Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
-
-                    //remove movie from favorites
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDb.favoritesDao().deleteMovie(resultsBean);
-                            favoritesList.edit()
-                                    .putBoolean(isFavorite, true)
-                                    .apply();
-                        }
-                    });
-
-                }
+            public void run() {
+                mDb.favoritesDao().insertMovie(resultsBean);
+                favoritesList.edit()
+                        .putBoolean(isFavorite, false)
+                        .apply();
 
             }
-
         });
-return true;
+
+
+    } else if (mFabClicked(mFab, true)) {
+        // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
+        this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+        Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
+
+        //remove movie from favorites
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.favoritesDao().deleteMovie(resultsBean);
+                favoritesList.edit()
+                        .putBoolean(isFavorite, true)
+                        .apply();
+            }
+        });
     }
+
+        return b;
+    }
+
 
 /*
     private void checkIfFavorite() {
