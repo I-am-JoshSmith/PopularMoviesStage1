@@ -248,11 +248,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle bundle) {
-        super.onRestoreInstanceState(bundle);
-
-
-    }
 
 }

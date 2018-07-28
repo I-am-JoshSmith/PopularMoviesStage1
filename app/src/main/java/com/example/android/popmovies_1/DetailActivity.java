@@ -49,6 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mBackdrop;
     ImageView mPoster;
     ImageView mTrailer;
+    boolean flag;
     boolean b;
     Integer movieId;
     String isFavorite;
@@ -59,12 +60,17 @@ public class DetailActivity extends AppCompatActivity {
     private SharedPreferences favoritesList;
     private static final String SHARED_PREFERENCES = "preferences";
 
+    private static final String ISFAVORITE = "isFavorite";
+    private static final String NOTFAVORITE = "notFavorite";
+
+
     public FloatingActionButton mFab;
 
     private View.OnClickListener mFabListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            mFabClicked( b);
+            mFabClicked(flag);
+
         }
     };
 
@@ -106,11 +112,13 @@ public class DetailActivity extends AppCompatActivity {
         // check to see if movie is part of favorites list
         //
         //
+
         isFavorite = movieId.toString();
         favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
         if (favoriteAdded) {
-            mFabClicked(true);
+            mFabClicked(flag = true);
+            this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
         }
 
         //calls to retrieve trailers and reviews
@@ -166,11 +174,11 @@ public class DetailActivity extends AppCompatActivity {
 
 
     // method recurses indefinatly... no idea how to fix
-    private boolean mFabClicked(boolean b) {
-        this.b = b;
-
+    private void mFabClicked(Boolean flag) {
+        this.flag = flag;
         final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
-        if (mFabClicked(true) ){
+
+        if (this.flag){
             // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
             Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
@@ -185,7 +193,7 @@ public class DetailActivity extends AppCompatActivity {
                             .apply();
                 }
             });
-        } else if (!mFabClicked(true)) {
+        } else {
 
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
             Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
@@ -204,7 +212,7 @@ public class DetailActivity extends AppCompatActivity {
             });
 
         }
-        return true;
+
     }
 
 /*

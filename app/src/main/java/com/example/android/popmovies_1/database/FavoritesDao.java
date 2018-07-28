@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.example.android.popmovies_1.MovieResults;
@@ -19,8 +20,8 @@ public interface FavoritesDao {
 
     @android.arch.persistence.room.Query("SELECT * FROM favorites ORDER BY title")
     LiveData<List<MovieResults.ResultsBean>> loadAllMovies();
-
-    @Insert
+// added onConflict to supress app crashes while trying to figure out how to get fab button to work
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMovie (MovieResults.ResultsBean resultsBean);
 
     @Delete
