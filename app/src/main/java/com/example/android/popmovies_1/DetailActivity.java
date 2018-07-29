@@ -1,6 +1,7 @@
 package com.example.android.popmovies_1;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -15,12 +16,15 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popmovies_1.database.AppExecutors;
+import com.example.android.popmovies_1.database.FavoriteViewModel;
+import com.example.android.popmovies_1.database.FavoriteViewModelFactory;
 import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
@@ -43,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     String myOverview;
     String myBackdrop;
     String myPoster;
+    Boolean myFavorite;
     TextView mVotes;
     TextView mDate;
     TextView mOverview;
@@ -50,18 +55,11 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mPoster;
     ImageView mTrailer;
     boolean flag;
-    boolean b;
     Integer movieId;
-    String isFavorite;
     private TrailerAdapter tAdapter;
     private ReviewAdapter rAdapter;
 
     private FavoritesDatabase mDb;
-    private SharedPreferences favoritesList;
-    private static final String SHARED_PREFERENCES = "preferences";
-
-    private static final String ISFAVORITE = "isFavorite";
-    private static final String NOTFAVORITE = "notFavorite";
 
 
     public FloatingActionButton mFab;
@@ -69,7 +67,8 @@ public class DetailActivity extends AppCompatActivity {
     private View.OnClickListener mFabListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            mFabClicked(flag);
+            mFabClicked(flag = false);
+
 
         }
     };
@@ -102,24 +101,12 @@ public class DetailActivity extends AppCompatActivity {
         myBackdrop = getIntent().getExtras().getString("backdrop", "defaultkey");
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
+        myFavorite = getIntent().getExtras().getBoolean( "favorite",false);
 
 
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
-
-
-        // check to see if movie is part of favorites list
-        //
-        //
-
-        isFavorite = movieId.toString();
-        favoritesList = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        boolean favoriteAdded = favoritesList.getBoolean(isFavorite, false);
-        if (favoriteAdded) {
-            mFabClicked(flag = true);
-            this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
-        }
 
         //calls to retrieve trailers and reviews
         getTrailers();
@@ -169,32 +156,20 @@ public class DetailActivity extends AppCompatActivity {
                 .load("http://image.tmdb.org/t/p/w185/" + myPoster)
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
+        checkIfFavorite();
     }
 
 
 
-    // method recurses indefinatly... no idea how to fix
-    private void mFabClicked(Boolean flag) {
+    // Method used to set buttons state
+    private void mFabClicked(boolean flag) {
         this.flag = flag;
-        final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate);
+
+        final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate, myFavorite);
+
 
         if (this.flag){
-            // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
-            this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
-            Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
-
-            //remove movie from favorites
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    mDb.favoritesDao().deleteMovie(resultsBean);
-                    favoritesList.edit()
-                            .putBoolean(isFavorite, true)
-                            .apply();
-                }
-            });
-        } else {
-
+            this.flag = true;
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
             Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
@@ -204,35 +179,53 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     mDb.favoritesDao().insertMovie(resultsBean);
-                    favoritesList.edit()
-                            .putBoolean(isFavorite,false)
-                            .apply();
 
                 }
             });
+
+        } if (!this.flag){
+            this.flag = false;
+            // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
+            this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+            Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
+
+            //remove movie from favorites database
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.favoritesDao().deleteMovie(resultsBean);
+
+                }
+            });
+
 
         }
 
     }
 
-/*
+
     private void checkIfFavorite() {
+        if (myFavorite != null) {
+            flag = true;
+        }
+    }
+        /*
         //get instances of the factory and viewModel
-        FavoriteViewModelFactory factory =
-                new FavoriteViewModelFactory(mDb, movieId);
+        if (movieId != null) {
+            FavoriteViewModelFactory factory =
+                    new FavoriteViewModelFactory(mDb, movieId);
 
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
             // if the query returns and is not null
-            Log.d("ViewModel","ViewModel="+viewModel.getFavorite(movieId));
+            Log.d("ViewModel", "ViewModel=" + viewModel.getFavorite(movieId));
 
-            if (viewModel.getFavorite(movieId) == null) {
+            if (viewModel.getFavorite(movieId).isFavorite != null) {
                 // if null set the fab to grey and flag to true
-                    if (mFab != null) {
-                        mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
-                        flag = true;
-                    }
-                }
+                mFabClicked(flag = true);
             }
+        }
+    }
 */
 
 

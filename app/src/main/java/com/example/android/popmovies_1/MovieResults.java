@@ -99,10 +99,12 @@ public class MovieResults {
 
         private String release_date;
 
+        private boolean favorite;
+
         @Ignore
         private List<Integer> genre_ids;
 
-        public ResultsBean(int id, double vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date) {
+        public ResultsBean(int id, double vote_average, String title, String poster_path, String backdrop_path, String overview, String release_date, boolean favorite) {
             this.id = id;
             this.vote_average = vote_average;
             this.title = title;
@@ -110,6 +112,7 @@ public class MovieResults {
             this.backdrop_path = backdrop_path;
             this.overview = overview;
             this.release_date = release_date;
+            this.favorite = favorite;
         }
 
         public int getVote_count() {
@@ -223,5 +226,9 @@ public class MovieResults {
         public void setGenre_ids(List<Integer> genre_ids) {
             this.genre_ids = genre_ids;
         }
+
+        public boolean isFavorite() { return favorite; }
+
+        public void setFavorite(boolean favorite) {this.favorite = favorite;}
     }
 }
