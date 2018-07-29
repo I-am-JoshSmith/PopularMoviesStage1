@@ -1,6 +1,7 @@
 package com.example.android.popmovies_1;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -103,6 +104,7 @@ public class DetailActivity extends AppCompatActivity {
         movieId = getIntent().getExtras().getInt("movieId", 0);
         myFavorite = getIntent().getExtras().getBoolean( "favorite",false);
 
+        Log.d("myFavorite", "myFavorite="+myFavorite);
 
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
@@ -156,6 +158,7 @@ public class DetailActivity extends AppCompatActivity {
                 .load("http://image.tmdb.org/t/p/w185/" + myPoster)
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
+        //Check if movie is favorite
         checkIfFavorite();
     }
 
@@ -163,13 +166,13 @@ public class DetailActivity extends AppCompatActivity {
 
     // Method used to set buttons state
     private void mFabClicked(boolean flag) {
-        this.flag = flag;
+        this.myFavorite = flag;
 
         final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate, myFavorite);
 
 
         if (this.flag){
-            this.flag = true;
+            //this.flag = true;
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
             Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
@@ -183,8 +186,8 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
 
-        } if (!this.flag){
-            this.flag = false;
+        } else {
+            //this.flag = false;
             // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
             Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
@@ -206,11 +209,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
     private void checkIfFavorite() {
-        if (myFavorite != null) {
-            flag = true;
-        }
-    }
-        /*
+
         //get instances of the factory and viewModel
         if (movieId != null) {
             FavoriteViewModelFactory factory =
@@ -218,15 +217,16 @@ public class DetailActivity extends AppCompatActivity {
 
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
             // if the query returns and is not null
-            Log.d("ViewModel", "ViewModel=" + viewModel.getFavorite(movieId));
+            Log.d("ViewModel", "ViewModel=" + viewModel.getFavorite(myFavorite));
 
-            if (viewModel.getFavorite(movieId).isFavorite != null) {
+            if (viewModel.getFavorite(myFavorite) != null) {
                 // if null set the fab to grey and flag to true
+                this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                 mFabClicked(flag = true);
             }
         }
     }
-*/
+
 
 
 

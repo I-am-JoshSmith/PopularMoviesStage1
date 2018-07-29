@@ -12,7 +12,7 @@ import com.example.android.popmovies_1.MovieResults;
 /**
  * Created by Grimlock on 7/10/18.
  */
-@Database(entities = {MovieResults.ResultsBean.class}, version = 1, exportSchema = false)
+@Database(entities = {MovieResults.ResultsBean.class}, version = 2, exportSchema = false)
 public abstract class FavoritesDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = FavoritesDatabase.class.getSimpleName();
@@ -26,6 +26,7 @@ public abstract class FavoritesDatabase extends RoomDatabase {
                 Log.d(LOG_TAG, "Creating new database instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         FavoritesDatabase.class, FavoritesDatabase.DATABASE_NAME)
+                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
