@@ -66,9 +66,10 @@ public class DetailActivity extends AppCompatActivity {
     public FloatingActionButton mFab;
 
     private View.OnClickListener mFabListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View view) {
-            mFabClicked(flag = false);
+            mFabClicked(flag = true);
 
 
         }
@@ -103,6 +104,7 @@ public class DetailActivity extends AppCompatActivity {
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
         myFavorite = getIntent().getExtras().getBoolean( "favorite",false);
+
 
         Log.d("myFavorite", "myFavorite="+myFavorite);
 
@@ -164,15 +166,15 @@ public class DetailActivity extends AppCompatActivity {
 
 
 
-    // Method used to set buttons state
+    // Method used to set buttons state - this
     private void mFabClicked(boolean flag) {
-        this.myFavorite = flag;
+        this.flag = flag;
 
         final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate, myFavorite);
 
 
-        if (this.flag){
-            //this.flag = true;
+        if (flag){
+            myFavorite = true;
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
             Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
@@ -187,7 +189,7 @@ public class DetailActivity extends AppCompatActivity {
             });
 
         } else {
-            //this.flag = false;
+            myFavorite = false;
             // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
             Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
@@ -207,8 +209,9 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-
+// call defaults to adding every movie when detailactivity is opened
     private void checkIfFavorite() {
+
 
         //get instances of the factory and viewModel
         if (movieId != null) {
@@ -217,9 +220,9 @@ public class DetailActivity extends AppCompatActivity {
 
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
             // if the query returns and is not null
-            Log.d("ViewModel", "ViewModel=" + viewModel.getFavorite(myFavorite));
+            Log.d("ViewModel", "ViewModel=" + viewModel.getFavorite(movieId));
 
-            if (viewModel.getFavorite(myFavorite) != null) {
+            if (viewModel.getFavorite(movieId) != null) {
                 // if null set the fab to grey and flag to true
                 this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                 mFabClicked(flag = true);

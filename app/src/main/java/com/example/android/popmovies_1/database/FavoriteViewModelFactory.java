@@ -3,8 +3,6 @@ package com.example.android.popmovies_1.database;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.example.android.popmovies_1.database.FavoriteViewModel;
-import com.example.android.popmovies_1.database.FavoritesDatabase;
 
 
 public class FavoriteViewModelFactory extends ViewModelProvider.NewInstanceFactory {

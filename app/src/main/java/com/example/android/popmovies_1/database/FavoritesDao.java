@@ -30,4 +30,5 @@ public interface FavoritesDao {
     @Query("SELECT * FROM favorites WHERE id = :id")
     LiveData<MovieResults.ResultsBean> loadFavoriteById(int id);
 
+
 }
