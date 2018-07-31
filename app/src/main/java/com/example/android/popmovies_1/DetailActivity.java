@@ -56,7 +56,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mBackdrop;
     ImageView mPoster;
     ImageView mTrailer;
-    boolean flag;
+    boolean isFavourite;
     Integer movieId;
     private TrailerAdapter tAdapter;
     private ReviewAdapter rAdapter;
@@ -70,8 +70,8 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            mFabClicked(flag = true);
-
+            isFavourite = !isFavourite;
+        mFabClicked(isFavourite);
 
         }
     };
@@ -104,6 +104,7 @@ public class DetailActivity extends AppCompatActivity {
         myBackdrop = getIntent().getExtras().getString("backdrop", "defaultkey");
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
+        //idea - pass the isfavorite column via intent to set the fab value
         myFavorite = getIntent().getExtras().getBoolean( "favorite",false);
 
 
@@ -168,14 +169,14 @@ public class DetailActivity extends AppCompatActivity {
 
 
     // Method used to set buttons state - this
-    private void mFabClicked(boolean flag) {
-        this.flag = flag;
+    private void mFabClicked(boolean isFavourite) {
+this.isFavourite = isFavourite;
 
         final MovieResults.ResultsBean resultsBean = new MovieResults.ResultsBean(movieId, myVotes, myTitle, myPoster, myBackdrop, myOverview, myDate, myFavorite);
 
 
-        if (flag){
-            myFavorite = true;
+        if (isFavourite){
+            isFavourite = true;
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
             Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
@@ -190,7 +191,7 @@ public class DetailActivity extends AppCompatActivity {
             });
 
         } else {
-            myFavorite = false;
+            isFavourite = false;
             // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
             Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
@@ -211,6 +212,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 // call defaults to adding every movie when detailactivity is opened
+
     private void checkIfFavorite() {
 
 
@@ -226,13 +228,13 @@ public class DetailActivity extends AppCompatActivity {
             if (viewModel.getFavorite(movieId) != null) {
                 // if null set the fab to grey and flag to true
                 this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-                mFabClicked(flag = true);
+                mFabClicked(isFavourite = true);
             }
         }
     }
 
 
-
+    //Trailers
 
     public static class TrailerViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
@@ -296,6 +298,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    //Reviews
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView mAuthorTextView;
