@@ -163,7 +163,7 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
         //Check if movie is favorite
-        checkIfFavorite();
+       checkIfFavorite();
     }
 
 
@@ -176,7 +176,7 @@ this.isFavourite = isFavourite;
 
 
         if (isFavourite){
-            isFavourite = true;
+
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
             Toast.makeText(DetailActivity.this, "Added to favorites", Toast.LENGTH_LONG).show();
 
@@ -191,7 +191,7 @@ this.isFavourite = isFavourite;
             });
 
         } else {
-            isFavourite = false;
+
             // mFab.setRippleColor(getResources().getColor(R.color.floating_action_button_color));
             this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
             Toast.makeText(DetailActivity.this, "Removed from favorites", Toast.LENGTH_LONG).show();
@@ -228,7 +228,8 @@ this.isFavourite = isFavourite;
             if (viewModel.getFavorite(movieId) != null) {
                 // if null set the fab to grey and flag to true
                 this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-                mFabClicked(isFavourite = true);
+                //set isFavorite to false until I can fix the method and get actual value of Favorite database
+                isFavourite = true;
             }
         }
     }
