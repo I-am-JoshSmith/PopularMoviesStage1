@@ -8,17 +8,17 @@ import android.arch.lifecycle.ViewModelProvider;
 public class FavoriteViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final FavoritesDatabase mDb;
-    private final int movieId;
+    private final String myTitle;
 
-    public FavoriteViewModelFactory(FavoritesDatabase database, int id) {
+    public FavoriteViewModelFactory(FavoritesDatabase database, String title) {
 
         mDb = database;
-        movieId = id;
+        myTitle = title;
     }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new FavoriteViewModel(mDb, movieId);
+            return (T) new FavoriteViewModel(mDb, myTitle);
     }
 }

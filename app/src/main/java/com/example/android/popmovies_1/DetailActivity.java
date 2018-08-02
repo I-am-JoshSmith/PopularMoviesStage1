@@ -66,6 +66,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public FloatingActionButton mFab;
 
+
     private View.OnClickListener mFabListener = new View.OnClickListener() {
 
         @Override
@@ -84,6 +85,9 @@ public class DetailActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        //Check if movie is favorite
+        checkIfFavorite();
 
         mFab = new FloatingActionButton(this);
         mFab = findViewById(R.id.myFAB);
@@ -162,8 +166,9 @@ public class DetailActivity extends AppCompatActivity {
                 .load("http://image.tmdb.org/t/p/w185/" + myPoster)
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
-        //Check if movie is favorite
-       checkIfFavorite();
+
+        //untested add fab color set to oncreate
+
     }
 
 
@@ -211,25 +216,29 @@ this.isFavourite = isFavourite;
 
     }
 
-// call defaults to adding every movie when detailactivity is opened
+// check if movie is favorite
 
     private void checkIfFavorite() {
 
 
         //get instances of the factory and viewModel
-        if (movieId != null) {
+        if (myTitle!= null) {
             FavoriteViewModelFactory factory =
-                    new FavoriteViewModelFactory(mDb, movieId);
+                    new FavoriteViewModelFactory(mDb, myTitle);
+
+            Log.d( "MYTITLE", "mytitle ="+myTitle);
 
             FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
             // if the query returns and is not null
-            Log.d("ViewModel", "ViewModel=" + viewModel.getFavorite(movieId));
 
-            if (viewModel.getFavorite(movieId) != null) {
+            if (viewModel.getFavorite() != null) {
                 // if null set the fab to grey and flag to true
                 this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
                 //set isFavorite to false until I can fix the method and get actual value of Favorite database
                 isFavourite = true;
+            } else {
+                mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+                isFavourite = false;
             }
         }
     }
