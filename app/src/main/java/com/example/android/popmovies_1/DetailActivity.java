@@ -30,6 +30,7 @@ import com.example.android.popmovies_1.database.FavoriteViewModelFactory;
 import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -86,8 +87,6 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        //Check if movie is favorite
-        checkIfFavorite();
 
         mFab = new FloatingActionButton(this);
         mFab = findViewById(R.id.myFAB);
@@ -108,11 +107,6 @@ public class DetailActivity extends AppCompatActivity {
         myBackdrop = getIntent().getExtras().getString("backdrop", "defaultkey");
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
-        //idea - pass the isfavorite column via intent to set the fab value
-        myFavorite = getIntent().getExtras().getBoolean( "favorite",false);
-
-
-        Log.d("myFavorite", "myFavorite="+myFavorite);
 
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
@@ -168,11 +162,11 @@ public class DetailActivity extends AppCompatActivity {
                 .into(mPoster);
 
         //untested add fab color set to oncreate
+//Check if movie is favorite
+        checkIfFavorite();
+
 
     }
-
-
-
     // Method used to set buttons state - this
     private void mFabClicked(boolean isFavourite) {
 this.isFavourite = isFavourite;
@@ -221,8 +215,27 @@ this.isFavourite = isFavourite;
     private void checkIfFavorite() {
 
 
-        //get instances of the factory and viewModel
-        if (myTitle!= null) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+
+
+            @Override
+            public void run() {
+                if (
+             mDb.favoritesDao().loadFavoriteByTitle(myTitle) != null){
+                    // if null set the fab to grey and flag to true
+                    mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
+                    //set isFavorite to false until I can fix the method and get actual value of Favorite database
+                    isFavourite = true;
+                } else {
+                    mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
+                    isFavourite = false;
+                }
+            }
+
+        });
+
+  /*      //get instances of the factory and viewModel
+        if (myTitle != null) {
             FavoriteViewModelFactory factory =
                     new FavoriteViewModelFactory(mDb, myTitle);
 
@@ -241,6 +254,7 @@ this.isFavourite = isFavourite;
                 isFavourite = false;
             }
         }
+        */
     }
 
 
