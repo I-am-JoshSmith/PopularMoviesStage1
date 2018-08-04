@@ -18,19 +18,15 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popmovies_1.database.AppExecutors;
-import com.example.android.popmovies_1.database.FavoriteViewModel;
-import com.example.android.popmovies_1.database.FavoriteViewModelFactory;
 import com.example.android.popmovies_1.database.FavoritesDatabase;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -107,7 +103,7 @@ public class DetailActivity extends AppCompatActivity {
         myBackdrop = getIntent().getExtras().getString("backdrop", "defaultkey");
         myPoster = getIntent().getExtras().getString("poster", "defaultkey");
         movieId = getIntent().getExtras().getInt("movieId", 0);
-
+        myFavorite = getIntent().getExtras().getBoolean("isFavourite", false);
         //initialize member variable for the database
         mDb = FavoritesDatabase.getInstance(getApplicationContext());
 
@@ -163,6 +159,7 @@ public class DetailActivity extends AppCompatActivity {
 
         //untested add fab color set to oncreate
 //Check if movie is favorite
+        isFavourite = false;
         checkIfFavorite();
 
 
@@ -234,27 +231,6 @@ this.isFavourite = isFavourite;
 
         });
 
-  /*      //get instances of the factory and viewModel
-        if (myTitle != null) {
-            FavoriteViewModelFactory factory =
-                    new FavoriteViewModelFactory(mDb, myTitle);
-
-            Log.d( "MYTITLE", "mytitle ="+myTitle);
-
-            FavoriteViewModel viewModel = ViewModelProviders.of(this, factory).get(FavoriteViewModel.class);
-            // if the query returns and is not null
-
-            if (viewModel.getFavorite() != null) {
-                // if null set the fab to grey and flag to true
-                this.mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff8800")));
-                //set isFavorite to false until I can fix the method and get actual value of Favorite database
-                isFavourite = true;
-            } else {
-                mFab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#424242")));
-                isFavourite = false;
-            }
-        }
-        */
     }
 
 
