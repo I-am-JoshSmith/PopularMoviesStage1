@@ -3,13 +3,10 @@ package com.example.android.popmovies_1.database;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.android.popmovies_1.MovieResults;
-import com.example.android.popmovies_1.database.FavoritesDatabase;
 
 import java.util.List;
 

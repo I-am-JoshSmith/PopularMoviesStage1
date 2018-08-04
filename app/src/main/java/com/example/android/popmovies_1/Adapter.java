@@ -1,5 +1,5 @@
 package com.example.android.popmovies_1;
-// so this is Room
+
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,6 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
 
 
     private static List<MovieResults.ResultsBean> mMovieList;
-    private static LiveData<List<MovieResults.ResultsBean>> mLiveMovieList;
     private LayoutInflater mInflater;
     private final Context mContext;
 
@@ -81,10 +80,6 @@ public class Adapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> 
         mMovieList = movieList;
     }
 
-    //bad attempt to get just the live data - leaving here for now to remember my progress
-    public void setLiveMovies(LiveData<List<MovieResults.ResultsBean>> liveMovieList){
-        mLiveMovieList = liveMovieList;
-    }
 
 
 }

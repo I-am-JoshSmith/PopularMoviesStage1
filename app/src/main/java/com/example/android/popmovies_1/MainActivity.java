@@ -1,10 +1,9 @@
 package com.example.android.popmovies_1;
 
-//test1
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +22,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.android.popmovies_1.database.FavoritesDatabase;
-import com.example.android.popmovies_1.database.MainActivityViewModelFactory;
 import com.example.android.popmovies_1.database.MainViewModel;
-import com.example.android.popmovies_1.database.ParcelableViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FavoritesDatabase mDb;
-    public ParcelableViewModel viewModel;
-    public MainActivityViewModelFactory factory;
-    public Bundle bundle;
-    public ViewModelProvider.Factory provider;
+
+    private Parcelable savedRecyclerLayoutState;
+    private GridLayoutManager mGridLayoutManager;
+    private static final String BUNDLE_RECYCLER_LAYOUT = "recycler_layout";
 
 
     @Override
@@ -64,18 +61,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_Posters);
         mRecyclerView.setHasFixedSize(true);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mGridLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(mGridLayoutManager);
 
         mAdapter = new Adapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         mDb = FavoritesDatabase.getInstance((getApplicationContext()));
-
-//need to remove the view model parceable method and implement proper way to save recyclerview state
-        factory = new MainActivityViewModelFactory(bundle, provider);
-        if (viewModel != null) {
-            viewModel = ViewModelProviders.of(this, factory).get(ParcelableViewModel.class);
-        }
 
 
     }
@@ -118,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 updateCategory(spinner);
+
             }
 
 
@@ -172,8 +165,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
         }
+
+
         if (call != null) {
             call.enqueue(new Callback<MovieResults>() {
+
                 @Override
                 public void onResponse(@NonNull Call<MovieResults> call, @NonNull Response<MovieResults> response) {
 
@@ -207,13 +203,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
         return null;
     }
 
     // Attempt at getting ViewModel/LiveData to populate the recyclerView when the Favorites Spinner is selected
     private void returnViewModel() {
-
+        if(savedRecyclerLayoutState!=null){
+            mGridLayoutManager.onRestoreInstanceState(savedRecyclerLayoutState);
+        }
 
         final MainViewModel viewModel1 = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel1.getFavorites().observe(MainActivity.this, new Observer<List<MovieResults.ResultsBean>>() {
@@ -232,16 +229,22 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
     }
-
-
     @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        super.onSaveInstanceState(bundle);
-        if (viewModel != null) {
-            viewModel.writeTo(bundle);
-        }
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT,
+                mGridLayoutManager.onSaveInstanceState());
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
 
+        //restore recycler view at same position
+        if (savedInstanceState != null) {
+            savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+        }
     }
 
 

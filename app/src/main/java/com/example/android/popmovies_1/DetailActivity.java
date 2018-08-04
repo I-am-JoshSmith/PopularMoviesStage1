@@ -1,10 +1,5 @@
 package com.example.android.popmovies_1;
 
-//test
-
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -157,7 +152,6 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.color.colorPrimaryDark)
                 .into(mPoster);
 
-        //untested add fab color set to oncreate
 //Check if movie is favorite
         isFavourite = false;
         checkIfFavorite();
