@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDb = FavoritesDatabase.getInstance((getApplicationContext()));
 
-
+//need to remove the view model parceable method and implement proper way to save recyclerview state
         factory = new MainActivityViewModelFactory(bundle, provider);
         if (viewModel != null) {
             viewModel = ViewModelProviders.of(this, factory).get(ParcelableViewModel.class);
